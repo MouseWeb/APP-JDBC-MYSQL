@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="16dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp"
+    tools:context=".CadastroActivity">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="295dp"
+        android:layout_height="137dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        app:srcCompat="@drawable/cadastro" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/fundo_caixa_texto"
+        android:padding="16dp"
+        android:textColorHint="@android:color/white"
+        android:hint="Digite seu nome"
+        android:id="@+id/nameCadastro"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/fundo_caixa_texto"
+        android:padding="16dp"
+        android:textColorHint="@android:color/white"
+        android:hint="Digite seu usuário"
+        android:id="@+id/novo_user_nome"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/fundo_caixa_texto"
+        android:padding="16dp"
+        android:textColorHint="@android:color/white"
+        android:hint="Digite sua senha"
+        android:id="@+id/novo_user_senha"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:inputType="textPassword" />
+
+    <Button
+        android:id="@+id/cadastra_user"
+        android:layout_width="276dp"
+        android:layout_height="56dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/fundo_botao"
+        android:text="Cadastrar" />
+
+</LinearLayout>

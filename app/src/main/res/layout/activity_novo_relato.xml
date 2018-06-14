@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".NovoRelatoActivity">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/medicamentoNovoRelato"
+            android:layout_width="266dp"
+            android:layout_height="65dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:ems="10"
+            android:hint="Medicamento:"
+            android:inputType="textPersonName" />
+
+        <ImageView
+            android:id="@+id/codeBarraPaciente"
+            android:layout_width="79dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            app:srcCompat="@drawable/barra" />
+
+    </LinearLayout>
+
+        <EditText
+            android:id="@+id/dosagemMedicamentoNovoRelato"
+            android:layout_width="349dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:ems="10"
+            android:hint="Dosagem do Medicamento:"
+            android:inputType="textPersonName" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/inicioTratamentoNovoRelato"
+            android:layout_width="169dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:ems="10"
+            android:gravity="center"
+            android:inputType="textPersonName"
+            android:hint="Inicio: 00/00/0000"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/fimTratamentoNovoRelato"
+            android:layout_width="180dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:ems="10"
+            android:gravity="center"
+            android:inputType="textPersonName"
+            android:hint="Término: 00/00/0000"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+        <EditText
+            android:id="@+id/gravidadeNovoRelato"
+            android:layout_width="349dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:ems="10"
+            android:hint="Gravidade do evento adverso:"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/descricaoNovoRelato"
+            android:layout_width="349dp"
+            android:layout_height="193dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:hint="Descrição do evento adverso:"
+            android:inputType="textMultiLine" />
+
+        <View
+            android:id="@+id/divider86"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:background="?android:attr/listDivider" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/cancelarEventoADV"
+                android:layout_width="72dp"
+                android:layout_height="65dp"
+                android:layout_marginRight="30dp"
+                android:gravity="center"
+                android:src="@drawable/cancelar" />
+
+            <ImageView
+                android:id="@+id/gravarNovoRelato"
+                android:layout_width="72dp"
+                android:layout_height="65dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="1dp"
+                android:gravity="center"
+                android:src="@drawable/envio" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

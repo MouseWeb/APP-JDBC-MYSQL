@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/homeMenu"
+            android:icon="@drawable/home"
+            android:title="Home" />
+        <item
+            android:id="@+id/novoRelatoMenu"
+            android:icon="@drawable/novo"
+            android:title="Novo Relato" />
+        <item
+            android:id="@+id/listarRelatoMenu"
+            android:icon="@drawable/lista"
+            android:title="Listar Relatos" />
+        <item
+            android:id="@+id/hopitalMenu"
+            android:icon="@drawable/hospitais"
+            android:title="Hospitais" />
+        <item
+            android:id="@+id/ajudaMenu"
+            android:icon="@drawable/ajudar"
+            android:title="Ajuda e Feedback" />
+    </group>
+
+    <item android:title="Configurações">
+        <menu>
+            <item
+                android:id="@+id/nortificadorMenu"
+                android:icon="@drawable/user"
+                android:title="Meu Perfil" />
+            <item
+                android:id="@+id/sairMenu"
+                android:icon="@drawable/exit"
+                android:title="Sair" />
+        </menu>
+    </item>
+
+</menu>
