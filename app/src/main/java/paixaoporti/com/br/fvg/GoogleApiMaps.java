@@ -135,8 +135,9 @@ public class GoogleApiMaps extends FragmentActivity implements OnMapReadyCallbac
 
         alertDialog.show();
     }
-
-
+    /**
+     * @author Douglas Coelho Goveia de Almeida
+     */
     private void startGettingLocations() {
 
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
