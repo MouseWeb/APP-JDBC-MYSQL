@@ -1,13 +1,21 @@
 package paixaoporti.com.br.fvg;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.preference.PreferenceManager;
+import android.provider.Settings;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import model.LoginDAO;
@@ -42,13 +50,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         if(dao.checkLogin(login.getText().toString (), senha.getText().toString ())){
 
-             ProgressDialog.show ( LoginActivity.this, "Aguarde",
-                    "Por Favor Aguarde..." );
-
             Intent f = new Intent(this,MainActivity.class);
+            ProgressDialog.show ( LoginActivity.this, "Aguarde",
+                    "Por Favor Aguarde..." );
             startActivity(f);
+
             Toast.makeText ( LoginActivity.this, "Logado com sucesso!!!", Toast.LENGTH_SHORT ).show ( );
 
+//            limparCampos();
             finish ();
 
         }else{
@@ -64,7 +73,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String userNameGet = login.getText ().toString ();
         String userPassGet = senha.getText ().toString ();
 
-        if ( userNameGet == null ||  userNameGet.equals ( "" ) ){
+        if (temConexao(LoginActivity.this) == false) {
+
+            mostraAlerta();
+
+        } else if ( userNameGet == null ||  userNameGet.equals ( "" ) ){
 
             login.setError( "Campo Obrigatorio!" );
 
@@ -75,7 +88,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         } else {
 
             salvarNovoRelato( );
-            limparCampos();
         }
     }
 
@@ -85,12 +97,53 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         this.codigo = 0;
     }
 
+    // Se precisar desse método pra mais de uma classe, mude ele pra ser estático.
+    private boolean temConexao(Context classe) {
+        //Pego a conectividade do contexto passado como argumento
+        ConnectivityManager gerenciador = (ConnectivityManager) classe.getSystemService( Context.CONNECTIVITY_SERVICE);
+        //Crio a variável informacao que recebe as informações da Rede
+        NetworkInfo informacao = gerenciador.getActiveNetworkInfo();
+        //Se o objeto for nulo ou nao tem conectividade retorna false
+        if ((informacao != null) && (informacao.isConnectedOrConnecting()) && (informacao.isAvailable())) {
+            return true;
+        }
+        return false;
+    }
+
+    // Mostra a informação caso não tenha internet.
+    private void mostraAlerta() {
+        AlertDialog.Builder informa = new AlertDialog.Builder(LoginActivity.this);
+//        informa.setMessage("Sem conexão com a internet.");
+//        informa.setNeutralButton("Voltar", null).show();
+        showSettingsAlert();
+    }
+
+    public void showSettingsAlert() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Internet desativado!");
+        alertDialog.setMessage("Ativar Internet?");
+        alertDialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent( Settings.ACTION_NETWORK_OPERATOR_SETTINGS );
+                startActivity(intent);
+            }
+        });
+
+        alertDialog.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        alertDialog.show();
+    }
+
     @Override
     public void onClick(View view) {
 
         if (view.getId() == R.id.loginEntrar ) {
 
-            validacao();
+            validacao ();
 
         }else if(view.getId () == R.id.cadastroUser ){
 
@@ -101,5 +154,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Toast.makeText ( LoginActivity.this, "Erro ao salvar Relato!", Toast.LENGTH_SHORT ).show ( );
         }
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy ( );
     }
 }
