@@ -1,14 +1,18 @@
 package paixaoporti.com.br.fvg;
 
-import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.provider.Settings;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import Controller.CadastroControle;
 import model.CadastroDAO;
 
@@ -23,11 +27,11 @@ public class CadastroActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate ( savedInstanceState );
         setContentView ( R.layout.activity_cadastro );
 
-        nomeCadastro = (EditText) findViewById(R.id.nameCadastro);
-        userCadastro = (EditText) findViewById(R.id.novo_user_nome);
-        senhaCadastro = (EditText) findViewById(R.id.novo_user_senha);
+        nomeCadastro        = (EditText) findViewById(R.id.nameCadastro);
+        userCadastro        = (EditText) findViewById(R.id.novo_user_nome);
+        senhaCadastro       = (EditText) findViewById(R.id.novo_user_senha);
 
-        btSalvarCadastro = (Button) findViewById(R.id.cadastra_user);
+        btSalvarCadastro    = (Button) findViewById(R.id.cadastra_user);
 
         btSalvarCadastro.setOnClickListener(this);
 
@@ -54,7 +58,11 @@ public class CadastroActivity extends AppCompatActivity implements View.OnClickL
         String userCadastroGet  = userCadastro.getText ().toString ();
         String senhaCadastroGet = senhaCadastro.getText ().toString ();
 
-        if ( nomeCadastroGet == null ||  nomeCadastroGet.equals ( "" ) ){
+        if (temConexao(CadastroActivity.this) == false) {
+
+            mostraAlerta();
+
+        } else if ( nomeCadastroGet == null ||  nomeCadastroGet.equals ( "" ) ){
 
             nomeCadastro.setError( "Campo Obrigatorio!" );
 
@@ -90,6 +98,47 @@ public class CadastroActivity extends AppCompatActivity implements View.OnClickL
         userCadastro.setText("");
         senhaCadastro.setText("");
         this.codigo = 0;
+    }
+
+    // Se precisar desse método pra mais de uma classe, mude ele pra ser estático.
+    private boolean temConexao(Context classe) {
+        //Pego a conectividade do contexto passado como argumento
+        ConnectivityManager gerenciador = (ConnectivityManager) classe.getSystemService( Context.CONNECTIVITY_SERVICE);
+        //Crio a variável informacao que recebe as informações da Rede
+        NetworkInfo informacao = gerenciador.getActiveNetworkInfo();
+        //Se o objeto for nulo ou nao tem conectividade retorna false
+        if ((informacao != null) && (informacao.isConnectedOrConnecting()) && (informacao.isAvailable())) {
+            return true;
+        }
+        return false;
+    }
+
+    // Mostra a informação caso não tenha internet.
+    private void mostraAlerta() {
+        AlertDialog.Builder informa = new AlertDialog.Builder(CadastroActivity.this);
+//        informa.setMessage("Sem conexão com a internet.");
+//        informa.setNeutralButton("Voltar", null).show();
+        showSettingsAlert();
+    }
+
+    public void showSettingsAlert() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Internet desativado!");
+        alertDialog.setMessage("Ativar Internet?");
+        alertDialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent( Settings.ACTION_NETWORK_OPERATOR_SETTINGS );
+                startActivity(intent);
+            }
+        });
+
+        alertDialog.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        alertDialog.show();
     }
 
     @Override

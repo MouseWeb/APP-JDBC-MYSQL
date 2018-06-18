@@ -47,7 +47,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         LoginDAO dao = new LoginDAO ();
 
-
         if(dao.checkLogin(login.getText().toString (), senha.getText().toString ())){
 
             Intent f = new Intent(this,MainActivity.class);
