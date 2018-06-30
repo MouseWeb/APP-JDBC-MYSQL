@@ -2,9 +2,15 @@ package paixaoporti.com.br.fvg;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.provider.Settings;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -45,15 +51,15 @@ public class NovoRelatoActivity extends AppCompatActivity implements View.OnClic
         getSupportActionBar().setHomeButtonEnabled(true);       //Ativar o botão
         getSupportActionBar().setTitle("Novo Relato");          //Titulo para ser exibido na sua Action Bar em frente à seta
 
-        inicioDataNovoRelato = (TextView) findViewById ( R.id.inicioTratamentoNovoRelato );
-        terminoDataNovoRelato = (TextView) findViewById ( R.id.fimTratamentoNovoRelato );
-        medicamentoNovoRelato = (EditText) findViewById ( R.id.medicamentoNovoRelato );
-        dosagemNovoRelato = (EditText) findViewById ( R.id.dosagemMedicamentoNovoRelato );
-        descricaoNovoRelato = (EditText) findViewById ( R.id.descricaoNovoRelato );
-        gravidadeNovoRelato = (EditText) findViewById ( R.id.gravidadeNovoRelato );
-        gravarNovoRelato = (ImageView) findViewById ( R.id.gravarNovoRelato );
-        codeBarraPaciente = (ImageView) findViewById ( R.id.codeBarraPaciente );
-        cancelarEventoADV = (ImageView) findViewById ( R.id.cancelarEventoADV );
+        inicioDataNovoRelato    = (TextView) findViewById ( R.id.inicioTratamentoNovoRelato );
+        terminoDataNovoRelato   = (TextView) findViewById ( R.id.fimTratamentoNovoRelato );
+        medicamentoNovoRelato   = (EditText) findViewById ( R.id.medicamentoNovoRelato );
+        dosagemNovoRelato       = (EditText) findViewById ( R.id.dosagemMedicamentoNovoRelato );
+        descricaoNovoRelato     = (EditText) findViewById ( R.id.descricaoNovoRelato );
+        gravidadeNovoRelato     = (EditText) findViewById ( R.id.gravidadeNovoRelato );
+        gravarNovoRelato        = (ImageView) findViewById ( R.id.gravarNovoRelato );
+        codeBarraPaciente       = (ImageView) findViewById ( R.id.codeBarraPaciente );
+        cancelarEventoADV       = (ImageView) findViewById ( R.id.cancelarEventoADV );
 
         gravarNovoRelato.setOnClickListener( this );
         cancelarEventoADV.setOnClickListener ( this );
@@ -174,15 +180,19 @@ public class NovoRelatoActivity extends AppCompatActivity implements View.OnClic
         dao.create ( n );
     }
 
-    public void validacao(){
+    public void validacao() {
 
-        String medicamentoCompleteGet = medicamentoNovoRelato.getText ().toString ();
-        String dosagemMedicamentoGet = dosagemNovoRelato.getText ().toString ();
-        String inicioDataGet = inicioDataNovoRelato.getText ().toString ();
-        String gravidadeMedicamentoGet = gravidadeNovoRelato.getText ().toString ();
-        String descricaoMedicamentoGet = descricaoNovoRelato.getText ().toString ();
+        String medicamentoCompleteGet   = medicamentoNovoRelato.getText ( ).toString ( );
+        String dosagemMedicamentoGet    = dosagemNovoRelato.getText ( ).toString ( );
+        String inicioDataGet            = inicioDataNovoRelato.getText ( ).toString ( );
+        String gravidadeMedicamentoGet  = gravidadeNovoRelato.getText ( ).toString ( );
+        String descricaoMedicamentoGet  = descricaoNovoRelato.getText ( ).toString ( );
 
-        if ( medicamentoCompleteGet == null ||  medicamentoCompleteGet.equals ( "" ) ){
+        if ( temConexao(NovoRelatoActivity.this) == false ) {
+
+            mostraAlerta();
+
+        }else if ( medicamentoCompleteGet == null ||  medicamentoCompleteGet.equals ( "" ) ){
 
             medicamentoNovoRelato.setError( "Campo Obrigatorio" );
 
@@ -225,6 +235,47 @@ public class NovoRelatoActivity extends AppCompatActivity implements View.OnClic
 
     public void limparDateTer() {
         terminoDataNovoRelato.setText ( "" );
+    }
+
+    // Se precisar desse método pra mais de uma classe, mude ele pra ser estático.
+    private boolean temConexao(Context classe) {
+        //Pego a conectividade do contexto passado como argumento
+        ConnectivityManager gerenciador = (ConnectivityManager) classe.getSystemService( Context.CONNECTIVITY_SERVICE);
+        //Crio a variável informacao que recebe as informações da Rede
+        NetworkInfo informacao = gerenciador.getActiveNetworkInfo();
+        //Se o objeto for nulo ou nao tem conectividade retorna false
+        if ((informacao != null) && (informacao.isConnectedOrConnecting()) && (informacao.isAvailable())) {
+            return true;
+        }
+        return false;
+    }
+
+    // Mostra a informação caso não tenha internet.
+    private void mostraAlerta() {
+        AlertDialog.Builder informa = new AlertDialog.Builder(NovoRelatoActivity.this);
+//        informa.setMessage("Sem conexão com a internet.");
+//        informa.setNeutralButton("Voltar", null).show();
+        showSettingsAlert();
+    }
+
+    public void showSettingsAlert() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Internet desativado!");
+        alertDialog.setMessage("Ativar Internet?");
+        alertDialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent( Settings.ACTION_NETWORK_OPERATOR_SETTINGS );
+                startActivity(intent);
+            }
+        });
+
+        alertDialog.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        alertDialog.show();
     }
 
     @Override

@@ -58,7 +58,7 @@ public class CadastroActivity extends AppCompatActivity implements View.OnClickL
         String userCadastroGet  = userCadastro.getText ().toString ();
         String senhaCadastroGet = senhaCadastro.getText ().toString ();
 
-        if (temConexao(CadastroActivity.this) == false) {
+        if ( temConexao(CadastroActivity.this) == false ) {
 
             mostraAlerta();
 

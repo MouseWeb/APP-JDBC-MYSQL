@@ -12,6 +12,13 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
+import android.view.animation.ScaleAnimation;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.EditText;
@@ -23,6 +30,7 @@ import model.LoginDAO;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
 
     private Button logar;
+    private Animation animation;
     private CheckedTextView cadastro;
     private EditText login;
     private EditText senha;
@@ -37,6 +45,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         cadastro = (CheckedTextView) findViewById(R.id.cadastroUser);
         login    = (EditText) findViewById ( R.id.login );
         senha    = (EditText) findViewById ( R.id.senha );
+
+        animation = new AlphaAnimation ( 1, 0 ); // Altera alpha de visível a invisível
+        animation.setDuration(1500); // duração - meio segundo
+        animation.setInterpolator(new LinearInterpolator ());
+        animation.setRepeatCount( Animation.ZORDER_BOTTOM); // Repetir infinitamente
+        animation.setRepeatMode(Animation.REVERSE); //Inverte a animação no final para que o botão vá desaparecendo
+        logar.startAnimation(animation);
 
         logar.setOnClickListener ( this );
         cadastro.setOnClickListener ( this );
@@ -72,7 +87,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String userNameGet = login.getText ().toString ();
         String userPassGet = senha.getText ().toString ();
 
-        if (temConexao(LoginActivity.this) == false) {
+        if ( temConexao(LoginActivity.this) == false ) {
 
             mostraAlerta();
 

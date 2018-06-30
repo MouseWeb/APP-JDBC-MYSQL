@@ -27,8 +27,8 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView( R.layout.activity_main);
 
-        novoRelato = (ImageView) findViewById(R.id.novoRelato);
-        listarRelato = (ImageView) findViewById(R.id.listarRelato);
+        novoRelato      = (ImageView) findViewById(R.id.novoRelato);
+        listarRelato    = (ImageView) findViewById(R.id.listarRelato);
         hospitaisRelato = (ImageView) findViewById(R.id.hospitais);
 
         novoRelato.setOnClickListener(new View.OnClickListener() {
