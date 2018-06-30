@@ -48,10 +48,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         animation = new AlphaAnimation ( 1, 0 ); // Altera alpha de visível a invisível
         animation.setDuration(1500); // duração - meio segundo
-        animation.setInterpolator(new LinearInterpolator ());
-        animation.setRepeatCount( Animation.ZORDER_BOTTOM); // Repetir infinitamente
-        animation.setRepeatMode(Animation.REVERSE); //Inverte a animação no final para que o botão vá desaparecendo
-        logar.startAnimation(animation);
+        animation.setInterpolator(new LinearInterpolator () );
+        animation.setRepeatCount( Animation.ZORDER_BOTTOM ); // Repetir infinitamente
+        animation.setRepeatMode( Animation.REVERSE ); //Inverte a animação no final para que o botão vá desaparecendo
+        logar.startAnimation( animation );
 
         logar.setOnClickListener ( this );
         cadastro.setOnClickListener ( this );
