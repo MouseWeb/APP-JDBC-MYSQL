@@ -46,13 +46,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         login    = (EditText) findViewById ( R.id.login );
         senha    = (EditText) findViewById ( R.id.senha );
 
-        animation = new AlphaAnimation ( 1, 0 ); // Altera alpha de visível a invisível
-        animation.setDuration(1500); // duração - meio segundo
-        animation.setInterpolator(new LinearInterpolator () );
-        animation.setRepeatCount( Animation.ZORDER_BOTTOM ); // Repetir infinitamente
-        animation.setRepeatMode( Animation.REVERSE ); //Inverte a animação no final para que o botão vá desaparecendo
-        logar.startAnimation( animation );
-
         logar.setOnClickListener ( this );
         cadastro.setOnClickListener ( this );
 
@@ -152,11 +145,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         alertDialog.show();
     }
 
+    public void animation(){
+        animation = new AlphaAnimation ( 1, 0 ); // Altera alpha de visível a invisível
+        animation.setDuration(200); // duração - um segundo e meio segundo
+        animation.setInterpolator(new LinearInterpolator () );
+        animation.setRepeatCount( Animation.RESTART ); // Repetir infinitamente
+        animation.setRepeatMode( Animation.ZORDER_TOP ); //Inverte a animação no final para que o botão vá desaparecendo
+        logar.startAnimation( animation );
+
+    }
+
     @Override
     public void onClick(View view) {
 
         if (view.getId() == R.id.loginEntrar ) {
 
+            animation ();
             validacao ();
 
         }else if(view.getId () == R.id.cadastroUser ){
