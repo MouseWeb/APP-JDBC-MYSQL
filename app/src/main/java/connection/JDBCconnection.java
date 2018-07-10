@@ -26,7 +26,7 @@ public class JDBCconnection {
             String banco = "mouseinformati05";
             String url = "jdbc:mysql://mysql.mouseinformatica.com.br/" + banco;
             String usuario = "mouseinformati05";
-            String senha = "mouse123";
+            String senha = "";
 
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             cn = DriverManager.getConnection(url, usuario, senha);
