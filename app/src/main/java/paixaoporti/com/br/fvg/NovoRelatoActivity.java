@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
@@ -26,7 +27,7 @@ import com.google.zxing.integration.android.IntentResult;
 
 import java.util.Calendar;
 import Controller.NovoRelatoControle;
-import model.NovoRelatoDAO;
+import impl.NovoRelatoDAO;
 
 public class NovoRelatoActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -41,6 +42,7 @@ public class NovoRelatoActivity extends AppCompatActivity implements View.OnClic
     private ImageView cancelarEventoADV;
     private EditText medicamentoNovoRelato, dosagemNovoRelato, descricaoNovoRelato, gravidadeNovoRelato;
     private int codigo;
+    private static final String PREF_NAME = "LoginActivityPreferences";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,11 +166,17 @@ public class NovoRelatoActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
-
     public void salvarNovoRelato() {
 
         NovoRelatoControle n = new NovoRelatoControle ();
         NovoRelatoDAO dao = new NovoRelatoDAO ();
+
+        SharedPreferences sp = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+
+        String login = sp.getString("login", "");
+        String senha = sp.getString("senha", "");
+
+        dao.buscarUsuario ( login, senha );
 
         n.setMedicaemnto ( medicamentoNovoRelato.getText().toString () );
         n.setDosagem ( dosagemNovoRelato.getText ().toString () );
@@ -220,21 +228,21 @@ public class NovoRelatoActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void limparCampos() {
-        medicamentoNovoRelato.setText ( "" );
-        dosagemNovoRelato.setText ( "" );
-        gravidadeNovoRelato.setText ( "" );
-        descricaoNovoRelato.setText ( "" );
-        inicioDataNovoRelato.setText ( "" );
-        terminoDataNovoRelato.setText ( "" );
+        medicamentoNovoRelato.setText("");
+        dosagemNovoRelato.setText("");
+        gravidadeNovoRelato.setText("");
+        descricaoNovoRelato.setText("");
+        inicioDataNovoRelato.setText("");
+        terminoDataNovoRelato.setText("");
         this.codigo = 0;
     }
 
     public void limparDateIni() {
-        inicioDataNovoRelato.setText ( "" );
+        inicioDataNovoRelato.setText("");
     }
 
     public void limparDateTer() {
-        terminoDataNovoRelato.setText ( "" );
+        terminoDataNovoRelato.setText("");
     }
 
     // Se precisar desse método pra mais de uma classe, mude ele pra ser estático.
@@ -264,7 +272,7 @@ public class NovoRelatoActivity extends AppCompatActivity implements View.OnClic
         alertDialog.setMessage("Ativar Internet?");
         alertDialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent( Settings.ACTION_NETWORK_OPERATOR_SETTINGS );
+                Intent intent = new Intent( Settings.ACTION_WIRELESS_SETTINGS );
                 startActivity(intent);
             }
         });

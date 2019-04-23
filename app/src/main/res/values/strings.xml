@@ -2,10 +2,10 @@
     <string name="app_name">Farmacovigilância</string>
     <string name="navigation_drawer_open">Projeto Eniac</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Douglas Coelho</string>
-    <string name="nav_header_subtitle">Douglas Coelho</string>
-    <string name="nav_header_desc">douglas@mouseweb.com.br</string>
-    <string name="action_settings">Sair</string>
+    <string name="nav_header_title">Projeto Eniac</string>
+    <string name="nav_header_subtitle">TCC Eniac</string>
+    <string name="nav_header_desc">fvg@fvg.com.br</string>
+    <string name="action_settings">Compartilhar link...</string>
     <string name="title_activity_google_api_maps">Mapa de Hospitais</string>
 
 </resources>

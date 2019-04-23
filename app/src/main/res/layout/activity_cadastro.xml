@@ -36,7 +36,7 @@
         android:background="@drawable/fundo_caixa_texto"
         android:padding="16dp"
         android:textColorHint="@android:color/white"
-        android:hint="Digite seu usuário"
+        android:hint="Login"
         android:id="@+id/novo_user_nome"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp" />
@@ -47,7 +47,7 @@
         android:background="@drawable/fundo_caixa_texto"
         android:padding="16dp"
         android:textColorHint="@android:color/white"
-        android:hint="Digite sua senha"
+        android:hint="Senha"
         android:id="@+id/novo_user_senha"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"

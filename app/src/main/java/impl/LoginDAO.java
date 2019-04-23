@@ -1,19 +1,23 @@
-package model;
+package impl;
+import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
+import Controller.LoginControle;
 import connection.JDBCconnection;
+import model.LoginInterface;
 
-public class LoginDAO {
+public class LoginDAO implements LoginInterface {
 
+    @Override
     public boolean checkLogin(String login, String senha) {
-
         Connection con = JDBCconnection.getConnection();
+
         PreparedStatement stmt = null;
         ResultSet rs = null;
 
@@ -28,18 +32,25 @@ public class LoginDAO {
             rs = stmt.executeQuery();
 
             if (rs.next()) {
-
                 check = true;
+
+                LoginControle c = new LoginControle ();
+                c.setId ( rs.getInt("idusuario") );
+
+                System.out.print( c.getId () );
+
             }
 
-        } catch (SQLException ex) {
-            Logger.getLogger(LoginDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
+        } catch (SQLException e) {
+            Log.e("BANCO", e.getMessage());
+        } catch (Exception e) {
+            Log.e("BANCO", e.getMessage());
+        }
+        finally {
             JDBCconnection.closeConnection(con, stmt, rs);
         }
 
         return check;
-
     }
 
 }

@@ -14,7 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import Controller.CadastroControle;
-import model.CadastroDAO;
+import impl.CadastroDAO;
 
 public class CadastroActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -39,13 +39,13 @@ public class CadastroActivity extends AppCompatActivity implements View.OnClickL
 
     public void salvarCadastro() {
 
-        CadastroControle c = new CadastroControle ();
-        CadastroDAO dao = new CadastroDAO ();
+        CadastroControle c = new CadastroControle();
+        CadastroDAO dao = new CadastroDAO();
 
-        c.setNome ( nomeCadastro.getText().toString () );
-        c.setUser ( userCadastro.getText ().toString () );
-        c.setSenha ( senhaCadastro.getText ().toString () );
-        dao.create ( c );
+        c.setNome( nomeCadastro.getText().toString() );
+        c.setUser( userCadastro.getText().toString() );
+        c.setSenha( senhaCadastro.getText().toString() );
+        dao.create( c );
 
         limparCampos();
     }
@@ -54,23 +54,23 @@ public class CadastroActivity extends AppCompatActivity implements View.OnClickL
 
         CadastroDAO dao = new CadastroDAO ();
 
-        String nomeCadastroGet  = nomeCadastro.getText ().toString ();
-        String userCadastroGet  = userCadastro.getText ().toString ();
-        String senhaCadastroGet = senhaCadastro.getText ().toString ();
+        String nomeCadastroGet  = nomeCadastro.getText().toString();
+        String userCadastroGet  = userCadastro.getText().toString();
+        String senhaCadastroGet = senhaCadastro.getText().toString();
 
         if ( temConexao(CadastroActivity.this) == false ) {
 
             mostraAlerta();
 
-        } else if ( nomeCadastroGet == null ||  nomeCadastroGet.equals ( "" ) ){
+        } else if ( nomeCadastroGet == null ||  nomeCadastroGet.equals("") ){
 
             nomeCadastro.setError( "Campo Obrigatorio!" );
 
-        } else if( userCadastroGet == null || userCadastroGet.equals ( "" ) ){
+        } else if( userCadastroGet == null || userCadastroGet.equals("") ){
 
             userCadastro.setError ( "Campo Obrigatorio!" );
 
-        } else if( senhaCadastroGet == null || senhaCadastroGet.equals ( "" ) ) {
+        } else if( senhaCadastroGet == null || senhaCadastroGet.equals("") ) {
 
             senhaCadastro.setError ( "Campo Obrigatorio!" );
 
@@ -127,7 +127,7 @@ public class CadastroActivity extends AppCompatActivity implements View.OnClickL
         alertDialog.setMessage("Ativar Internet?");
         alertDialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent( Settings.ACTION_NETWORK_OPERATOR_SETTINGS );
+                Intent intent = new Intent( Settings.ACTION_WIRELESS_SETTINGS );
                 startActivity(intent);
             }
         });

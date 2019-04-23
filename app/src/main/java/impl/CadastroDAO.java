@@ -1,4 +1,4 @@
-package model;
+package impl;
 
 import android.util.Log;
 import java.sql.Connection;
@@ -34,7 +34,7 @@ public class CadastroDAO {
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(LoginDAO.class.getName()).log( Level.SEVERE, null, ex);
+            Logger.getLogger(LoginDAO.class.getName()).log( Level.SEVERE, null, ex.getMessage());
         } finally {
             JDBCconnection.closeConnection(con, stmt, rs);
         }
@@ -51,16 +51,16 @@ public class CadastroDAO {
 
         try {
             stmt = con.prepareStatement("INSERT INTO tbl_usuarios (usu_nome,usu_login,usu_senha,usu_nivel) VALUES (?,?,?,?)");
-            stmt.setString(1, c.getNome () );
-            stmt.setString ( 2, c.getUser () );
-            stmt.setString ( 3, c.getSenha () );
-            stmt.setString ( 4,c.getNivel () );
+            stmt.setString(1, c.getNome());
+            stmt.setString( 2, c.getUser());
+            stmt.setString( 3, c.getSenha());
+            stmt.setString( 4,c.getNivel());
 
             stmt.executeUpdate();
 
-            Log.e("BANCO", "Salvo com sucesso!");
+            Log.e("CADASTRO: ", "Salvo com sucesso!");
         } catch (SQLException e) {
-            Log.e("BANCO", "Erro ao salvar!" + e);
+            Log.e("CADASTRO", "Erro ao salvar! " + e.getMessage());
         } finally {
             JDBCconnection.closeConnection(con, stmt);
         }

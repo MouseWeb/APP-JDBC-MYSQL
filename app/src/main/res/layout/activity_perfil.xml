@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context=".PerfilActivity">
 
-    <LinearLayout
+    <!--<LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -133,5 +133,5 @@
                 android:src="@drawable/ok" />
 
         </LinearLayout>
-    </LinearLayout>
+    </LinearLayout>-->
 </ScrollView>

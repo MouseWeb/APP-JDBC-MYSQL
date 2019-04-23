@@ -14,6 +14,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.content.SharedPreferences;
+import android.util.Log;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -21,6 +23,16 @@ public class MainActivity extends AppCompatActivity
     private ImageView novoRelato;
     private ImageView listarRelato;
     private ImageView hospitaisRelato;
+
+    private static final String PREF_NAME = "MainActivityPreferences";
+    private int count1;
+
+    private SharedPreferences.OnSharedPreferenceChangeListener callback = new SharedPreferences.OnSharedPreferenceChangeListener(){
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            Log.i("Script", key+" updated");
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +95,11 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
+        SharedPreferences sp1 = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        count1 = sp1.getInt("count_1", 0);
+        Log.i("Script", "COUNT 1: "+count1);
+        sp1.registerOnSharedPreferenceChangeListener(callback);
+
     }
 
     @Override
@@ -108,11 +125,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
-            Intent intent = new Intent (this, LoginActivity.class);
-            startActivity(intent);
-            System.exit(0);
-            finish ();
-            return true;
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -121,7 +134,7 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-
+        String PREF_NAME = "LoginActivityPreferences";
         int id = item.getItemId();
 
         if (id == R.id.homeMenu){
@@ -158,16 +171,41 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.sairMenu) {
 
-            Intent intent = new Intent (this, LoginActivity.class);
-            startActivity(intent);
-            System.exit(0);
-            finish ();
+            SharedPreferences sp = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+            SharedPreferences.Editor editor = sp.edit();
+            editor.clear().commit();
+            finish();
 
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        SharedPreferences sp1 = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        count1 = sp1.getInt("count_1", 0);
+        SharedPreferences.Editor editor = sp1.edit();
+        editor.putInt("count_1", count1 + 1);
+        editor.commit();
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        SharedPreferences sp1 = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        sp1.unregisterOnSharedPreferenceChangeListener(callback);
+
+        SharedPreferences.Editor editor = sp1.edit();
+        editor.clear();
+        editor.commit();
+
     }
 
 }

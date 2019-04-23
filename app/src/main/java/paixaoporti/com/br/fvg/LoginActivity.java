@@ -6,105 +6,97 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.RotateAnimation;
-import android.view.animation.ScaleAnimation;
-import android.view.animation.TranslateAnimation;
-import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Toast;
+import android.content.SharedPreferences;
+import android.widget.CheckBox;
 
-import model.LoginDAO;
+import impl.LoginDAO;
+import model.LoginInterface;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private Button logar;
-    private Animation animation;
+    private static final String PREF_NAME = "LoginActivityPreferences";
     private CheckedTextView cadastro;
-    private EditText login;
-    private EditText senha;
-    private int codigo;
+
+    LoginInterface loginInterface = new LoginDAO();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate ( savedInstanceState );
-        setContentView ( R.layout.activity_login );
+        super.onCreate (savedInstanceState);
+        setContentView (R.layout.activity_login);
 
-        logar    = (Button) findViewById(R.id.loginEntrar);
         cadastro = (CheckedTextView) findViewById(R.id.cadastroUser);
-        login    = (EditText) findViewById ( R.id.login );
-        senha    = (EditText) findViewById ( R.id.senha );
+        cadastro.setOnClickListener (this);
 
-        logar.setOnClickListener ( this );
-        cadastro.setOnClickListener ( this );
+        SharedPreferences sp = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
 
-    }
+        String login = sp.getString("login", "");
+        String senha = sp.getString("senha", "");
 
-    public void salvarNovoRelato() {
+        if(loginInterface.checkLogin(login, senha)){
 
-        LoginDAO dao = new LoginDAO ();
-
-        if(dao.checkLogin(login.getText().toString (), senha.getText().toString ())){
-
-            Intent f = new Intent(this,MainActivity.class);
-            ProgressDialog.show ( LoginActivity.this, "Aguarde",
-                    "Por Favor Aguarde..." );
-            startActivity(f);
-
-            Toast.makeText ( LoginActivity.this, "Logado com sucesso!!!", Toast.LENGTH_SHORT ).show ( );
-
-//            limparCampos();
-            finish ();
-
-        }else{
-
-            Toast.makeText ( LoginActivity.this, "Senha incorreta!!!", Toast.LENGTH_SHORT ).show ( );
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
 
         }
 
     }
 
-    public void validacao(){
-
-        String userNameGet = login.getText ().toString ();
-        String userPassGet = senha.getText ().toString ();
+    public void signIn(View view){
 
         if ( temConexao(LoginActivity.this) == false ) {
-
             mostraAlerta();
-
-        } else if ( userNameGet == null ||  userNameGet.equals ( "" ) ){
-
-            login.setError( "Campo Obrigatorio!" );
-
-        } else if( userPassGet == null || userPassGet.equals ( "" ) ){
-
-            senha.setError ( "Campo Obrigatorio!" );
-
-        } else {
-
-            salvarNovoRelato( );
+            return;
         }
+
+        EditText etLogin = (EditText) findViewById(R.id.login);
+        EditText etPassword = (EditText) findViewById(R.id.senha);
+
+        String login = etLogin.getText().toString();
+        String senha = etPassword.getText().toString();
+
+        if(loginInterface.checkLogin(login, senha)){
+
+                SharedPreferences sp = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+                SharedPreferences.Editor editor = sp.edit();
+
+                editor.putString("login", login);
+                editor.putString("senha", senha);
+                editor.commit();
+
+            if ( sp.getString("login", "") != null || sp.getString("login", "") != ""
+                    && sp.getString("senha", "") != null || sp.getString("senha", "") != "") {
+
+                ProgressDialog.show ( LoginActivity.this, "Aguarde",
+                        "Por Favor Aguarde..." );
+            }
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(intent);
+        }
+        else{
+            Toast.makeText(LoginActivity.this, "Senha incorreta!!!", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
-    public void limparCampos() {
-        login.setText ( "" );
-        senha.setText ( "" );
-        this.codigo = 0;
+    @Override
+    public void onClick(View view) {
+
+         if (view.getId () == R.id.cadastroUser ){
+            Intent f = new Intent(this,CadastroActivity.class);
+            startActivity(f);
+
+        }
+
     }
 
-    // Se precisar desse método pra mais de uma classe, mude ele pra ser estático.
     private boolean temConexao(Context classe) {
         //Pego a conectividade do contexto passado como argumento
         ConnectivityManager gerenciador = (ConnectivityManager) classe.getSystemService( Context.CONNECTIVITY_SERVICE);
@@ -120,18 +112,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     // Mostra a informação caso não tenha internet.
     private void mostraAlerta() {
         AlertDialog.Builder informa = new AlertDialog.Builder(LoginActivity.this);
-//        informa.setMessage("Sem conexão com a internet.");
-//        informa.setNeutralButton("Voltar", null).show();
+        informa.setMessage("Sem conexão com a internet!");
+        informa.setNeutralButton("Voltar", null).show();
         showSettingsAlert();
     }
 
     public void showSettingsAlert() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-        alertDialog.setTitle("Internet desativado!");
-        alertDialog.setMessage("Ativar Internet?");
+        alertDialog.setTitle("Sem conexão com a internet!");
+        alertDialog.setMessage("Verifique a conexão com a internet!");
         alertDialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent( Settings.ACTION_NETWORK_OPERATOR_SETTINGS );
+                Intent intent = new Intent( Settings.ACTION_WIRELESS_SETTINGS );
                 startActivity(intent);
             }
         });
@@ -145,37 +137,4 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         alertDialog.show();
     }
 
-    public void animation(){
-        animation = new AlphaAnimation ( 1, 0 ); // Altera alpha de visível a invisível
-        animation.setDuration(200); // duração - um segundo e meio segundo
-        animation.setInterpolator(new LinearInterpolator () );
-        animation.setRepeatCount( Animation.RESTART ); // Repetir infinitamente
-        animation.setRepeatMode( Animation.ZORDER_TOP ); //Inverte a animação no final para que o botão vá desaparecendo
-        logar.startAnimation( animation );
-
-    }
-
-    @Override
-    public void onClick(View view) {
-
-        if (view.getId() == R.id.loginEntrar ) {
-
-            animation ();
-            validacao ();
-
-        }else if(view.getId () == R.id.cadastroUser ){
-
-            Intent f = new Intent(this,CadastroActivity.class);
-            startActivity(f);
-
-        }else{
-            Toast.makeText ( LoginActivity.this, "Erro ao salvar Relato!", Toast.LENGTH_SHORT ).show ( );
-        }
-
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy ( );
-    }
 }

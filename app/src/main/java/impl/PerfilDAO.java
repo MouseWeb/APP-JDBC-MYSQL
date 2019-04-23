@@ -1,4 +1,4 @@
-package model;
+package impl;
 
 public class PerfilDAO {
 }

@@ -6,8 +6,7 @@ import android.net.NetworkInfo;
 
 public class ValidConnection {
 
-    // Se precisar desse método pra mais de uma classe, mude ele pra ser estático.
-    private boolean temConexao(Context classe) {
+    private static boolean temConexao(Context classe) {
         //Pego a conectividade do contexto passado como argumento
         ConnectivityManager gerenciador = (ConnectivityManager) classe.getSystemService( Context.CONNECTIVITY_SERVICE);
         //Crio a variável informacao que recebe as informações da Rede

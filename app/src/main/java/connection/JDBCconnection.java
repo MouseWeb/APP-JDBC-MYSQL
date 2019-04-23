@@ -2,7 +2,6 @@ package connection;
 
 import android.os.StrictMode;
 import android.util.Log;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -11,10 +10,9 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 public class JDBCconnection {
 
-    //Método de Conexão//
+    //Método de Conexão
     public static Connection getConnection() {
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
@@ -23,25 +21,26 @@ public class JDBCconnection {
 
         Connection cn = null;
         try {
-            String banco = "mouseinformati05";
-            String url = "jdbc:mysql://mysql.mouseinformatica.com.br/" + banco;
-            String usuario = "mouseinformati05";
-            String senha = "";
+            String banco = "mouseweb01";
+            String url = "jdbc:mysql://mysql.mouseweb.com.br/" + banco;
+            String usuario = "mouseweb01";
+            String senha = "MOUSE456";
 
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             cn = DriverManager.getConnection(url, usuario, senha);
 
-            Log.e("BANCO", "Conexão Aberta");
+            Log.e("BANCO: ", "Conexão Aberta");
         } catch (SQLException e) {
-            Log.e("BANCO", e.getMessage());
-        } catch (ClassNotFoundException e) {
-            Log.e("BANCO", e.getMessage());
+            Log.e("BANCO: ", e.getMessage());
+        } catch (NumberFormatException e) {
+            Log.e("BANCO: ", e.getMessage());
+        } catch (IllegalAccessException e) {
+            Log.e("BANCO: ", e.getMessage());
         } catch (Exception e) {
-            Log.e("BANCO", e.getMessage());
+            Log.e("BANCO: ", e.getMessage());
         }
         return cn;
     }
-
 
     public static void closeConnection(Connection con) {
         try {
@@ -49,12 +48,11 @@ public class JDBCconnection {
                 con.close();
             }
         } catch (SQLException e) {
-            Logger.getLogger(JDBCconnection.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(JDBCconnection.class.getName()).log(Level.SEVERE, null, e.getMessage());
         }
     }
 
     public static void closeConnection(Connection con, PreparedStatement stmt) {
-
         closeConnection(con);
 
         try {
@@ -64,12 +62,11 @@ public class JDBCconnection {
             }
 
         } catch (SQLException e) {
-            Logger.getLogger(JDBCconnection.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(JDBCconnection.class.getName()).log(Level.SEVERE, null, e.getMessage());
         }
     }
 
     public static void closeConnection(Connection con, PreparedStatement stmt, ResultSet rs) {
-
         closeConnection(con, stmt);
 
         try {
@@ -79,7 +76,7 @@ public class JDBCconnection {
             }
 
         } catch (SQLException e) {
-            Logger.getLogger(JDBCconnection.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(JDBCconnection.class.getName()).log(Level.SEVERE, null, e.getMessage());
         }
     }
 
