@@ -2,6 +2,7 @@ package connection;
 
 import android.os.StrictMode;
 import android.util.Log;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -31,13 +32,13 @@ public class JDBCconnection {
 
             Log.e("BANCO: ", "Conexão Aberta");
         } catch (SQLException e) {
-            Log.e("BANCO: ", e.getMessage());
+            throw new DbException("BANCO (SQLException): " + e.getMessage());
         } catch (NumberFormatException e) {
-            Log.e("BANCO: ", e.getMessage());
+            throw new DbIntegrityException ("BANCO (NumberFormatException): " + e.getMessage());
         } catch (IllegalAccessException e) {
-            Log.e("BANCO: ", e.getMessage());
+            throw new DbException("BANCO (IllegalAccessException): " + e.getMessage());
         } catch (Exception e) {
-            Log.e("BANCO: ", e.getMessage());
+            throw new DbException("BANCO (Exception): " + e.getMessage());
         }
         return cn;
     }
@@ -46,6 +47,7 @@ public class JDBCconnection {
         try {
             if (con != null) {
                 con.close();
+                Log.e("BANCO: ", "Conexão Fechada (con)");
             }
         } catch (SQLException e) {
             Logger.getLogger(JDBCconnection.class.getName()).log(Level.SEVERE, null, e.getMessage());
@@ -59,6 +61,7 @@ public class JDBCconnection {
 
             if (stmt != null) {
                 stmt.close();
+                Log.e("BANCO: ", "Conexão Fechada (con) + (stmt)");
             }
 
         } catch (SQLException e) {
@@ -73,11 +76,13 @@ public class JDBCconnection {
 
             if (rs != null) {
                 rs.close();
+                Log.e("BANCO: ", "Conexão Fechada (con) + (stmt) + (rs)");
             }
 
         } catch (SQLException e) {
             Logger.getLogger(JDBCconnection.class.getName()).log(Level.SEVERE, null, e.getMessage());
         }
+
     }
 
 }

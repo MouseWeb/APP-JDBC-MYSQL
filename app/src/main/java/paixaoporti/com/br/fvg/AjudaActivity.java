@@ -74,4 +74,5 @@ public class AjudaActivity extends AppCompatActivity {
         } );
 
     }
+
 }

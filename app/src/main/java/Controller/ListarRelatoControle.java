@@ -1,7 +1,5 @@
 package Controller;
 
-import java.util.Objects;
-
 public class ListarRelatoControle {
 
     private int id;
@@ -42,7 +40,7 @@ public class ListarRelatoControle {
         this.dosagem = dosagem;
     }
 
-    public String getDataInicio(String rel_qd_med_ini) {
+    public String getDataInicio(String dataInicio) {
         return dataInicio;
     }
 

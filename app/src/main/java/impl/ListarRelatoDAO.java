@@ -14,7 +14,6 @@ import Controller.LoginControle;
 import connection.JDBCconnection;
 import model.ListarRelatoInterface;
 
-
 public class ListarRelatoDAO implements ListarRelatoInterface {
 
     LoginControle c = new LoginControle ( );

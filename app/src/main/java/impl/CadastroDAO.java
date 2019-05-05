@@ -29,7 +29,6 @@ public class CadastroDAO {
             rs = stmt.executeQuery();
 
             if (rs.next()) {
-
                 check = true;
             }
 

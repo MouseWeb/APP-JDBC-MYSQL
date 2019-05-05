@@ -1,6 +1,13 @@
 package paixaoporti.com.br.fvg;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.provider.Settings;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -34,9 +41,14 @@ public class ListarRelatosActivity extends AppCompatActivity {
         String login = sp.getString("login", "");
         String senha = sp.getString("senha", "");
 
-        dao.buscarRelatos ( login, senha );
+        if ( temConexao(ListarRelatosActivity.this) == false ) {
+            mostraAlerta();
+            return;
+        } else {
+            dao.buscarRelatos ( login, senha );
+        }
 
-        //lista
+        // lista
         listaRelatos = (ListView) findViewById(R.id.listadeEventosCadastrados);
 
         List<ListarRelatoControle> list = dao.getListaRelato ();
@@ -57,6 +69,42 @@ public class ListarRelatosActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private boolean temConexao(Context classe) {
+        ConnectivityManager gerenciador = (ConnectivityManager) classe.getSystemService( Context.CONNECTIVITY_SERVICE);
+        NetworkInfo informacao = gerenciador.getActiveNetworkInfo();
+        if ((informacao != null) && (informacao.isConnectedOrConnecting()) && (informacao.isAvailable())) {
+            return true;
+        }
+        return false;
+    }
+
+    private void mostraAlerta() {
+        AlertDialog.Builder informa = new AlertDialog.Builder(ListarRelatosActivity.this);
+        informa.setMessage("Sem conexão com a internet!");
+        informa.setNeutralButton("Voltar", null).show();
+        showSettingsAlert();
+    }
+
+    public void showSettingsAlert() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Sem conexão com a internet!");
+        alertDialog.setMessage("Verifique a conexão com a internet!");
+        alertDialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent( Settings.ACTION_WIRELESS_SETTINGS );
+                startActivity(intent);
+            }
+        });
+
+        alertDialog.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        alertDialog.show();
     }
 
 }

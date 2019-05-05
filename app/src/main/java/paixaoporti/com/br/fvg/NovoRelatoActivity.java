@@ -200,24 +200,19 @@ public class NovoRelatoActivity extends AppCompatActivity implements View.OnClic
 
             mostraAlerta();
 
-        }else if ( medicamentoCompleteGet == null ||  medicamentoCompleteGet.equals ( "" ) ){
-
+        } else if ( medicamentoCompleteGet == null ||  medicamentoCompleteGet.equals ( "" ) ){
             medicamentoNovoRelato.setError( "Campo Obrigatorio" );
 
         } else if( dosagemMedicamentoGet == null || dosagemMedicamentoGet.equals ( "" ) ){
-
             dosagemNovoRelato.setError ( "Campo Obrigatorio" );
 
         } else if ( inicioDataGet == null || inicioDataGet.equals ( "" ) ){
-
             inicioDataNovoRelato.setError ( "Campo Obrigatorio" );
 
         } else if( gravidadeMedicamentoGet == null || gravidadeMedicamentoGet.equals ( "" ) ){
-
             gravidadeNovoRelato.setError ( "Campo Obrigatorio" );
 
         } else if( descricaoMedicamentoGet == null || descricaoMedicamentoGet.equals ( "" ) ){
-
             descricaoNovoRelato.setError ( "Campo Obrigatorio" );
 
         } else {

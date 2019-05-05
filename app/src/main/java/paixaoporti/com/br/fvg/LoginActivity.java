@@ -15,7 +15,6 @@ import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.Toast;
 import android.content.SharedPreferences;
-import android.widget.CheckBox;
 
 import impl.LoginDAO;
 import model.LoginInterface;
@@ -24,6 +23,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private static final String PREF_NAME = "LoginActivityPreferences";
     private CheckedTextView cadastro;
+    private EditText loginVerifique;
+    private EditText senhaVerifique;
 
     LoginInterface loginInterface = new LoginDAO();
 
@@ -31,6 +32,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
         setContentView (R.layout.activity_login);
+
+        loginVerifique = (EditText) findViewById ( R.id.login );
+        senhaVerifique = (EditText) findViewById ( R.id.senha );
 
         cadastro = (CheckedTextView) findViewById(R.id.cadastroUser);
         cadastro.setOnClickListener (this);
@@ -40,8 +44,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String login = sp.getString("login", "");
         String senha = sp.getString("senha", "");
 
-        if(loginInterface.checkLogin(login, senha)){
-
+        if ( temConexao(LoginActivity.this) == false ) {
+            mostraAlerta();
+            return;
+        } else if (loginInterface.checkLogin(login, senha)){
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
 
@@ -51,18 +57,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     public void signIn(View view){
 
-        if ( temConexao(LoginActivity.this) == false ) {
-            mostraAlerta();
-            return;
-        }
-
         EditText etLogin = (EditText) findViewById(R.id.login);
         EditText etPassword = (EditText) findViewById(R.id.senha);
 
         String login = etLogin.getText().toString();
         String senha = etPassword.getText().toString();
 
-        if(loginInterface.checkLogin(login, senha)){
+        if ( temConexao(LoginActivity.this) == false ) {
+            mostraAlerta();
+            return;
+        } else if (validacao() == false){
+            return;
+        } else if (loginInterface.checkLogin(login, senha)){
 
                 SharedPreferences sp = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
                 SharedPreferences.Editor editor = sp.edit();
@@ -74,14 +80,34 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             if ( sp.getString("login", "") != null || sp.getString("login", "") != ""
                     && sp.getString("senha", "") != null || sp.getString("senha", "") != "") {
 
-                ProgressDialog.show ( LoginActivity.this, "Aguarde",
+                ProgressDialog progressDialog = ProgressDialog.show ( LoginActivity.this, "Aguarde",
                         "Por Favor Aguarde..." );
-            }
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            startActivity(intent);
-        }
-        else{
+                startActivity(intent);
+                progressDialog.dismiss();
+            }
+
+        } else {
             Toast.makeText(LoginActivity.this, "Senha incorreta!!!", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    private boolean validacao() {
+
+        String userNameGet = loginVerifique.getText ().toString ();
+        String userPassGet = senhaVerifique.getText ().toString ();
+
+        if ( userNameGet == null ||  userNameGet.equals ( "" ) ){
+
+            loginVerifique.setError( "Campo Obrigatorio!" );
+            return false;
+        } else if( userPassGet == null || userPassGet.equals ( "" ) ){
+
+            senhaVerifique.setError ( "Campo Obrigatorio!" );
+            return false;
+        } else {
+            return true;
         }
 
     }
@@ -98,18 +124,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private boolean temConexao(Context classe) {
-        //Pego a conectividade do contexto passado como argumento
         ConnectivityManager gerenciador = (ConnectivityManager) classe.getSystemService( Context.CONNECTIVITY_SERVICE);
-        //Crio a variável informacao que recebe as informações da Rede
         NetworkInfo informacao = gerenciador.getActiveNetworkInfo();
-        //Se o objeto for nulo ou nao tem conectividade retorna false
         if ((informacao != null) && (informacao.isConnectedOrConnecting()) && (informacao.isAvailable())) {
             return true;
         }
         return false;
     }
 
-    // Mostra a informação caso não tenha internet.
     private void mostraAlerta() {
         AlertDialog.Builder informa = new AlertDialog.Builder(LoginActivity.this);
         informa.setMessage("Sem conexão com a internet!");

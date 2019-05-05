@@ -59,11 +59,23 @@ public class GoogleApiMaps extends FragmentActivity implements OnMapReadyCallbac
         mMap = googleMap;
 
         // Adicione um marcador no mapa e mova a câmera
-        LatLng p = new LatLng(-23.602207,-46.6584327);
-        mMap.addMarker(new MarkerOptions().position(p).title("Hospital 1"));
+        LatLng p = new LatLng(-23.4632209,-46.5393192);
+        mMap.addMarker(new MarkerOptions().position(p).title("Hospital Carlos Chagas"));
 
-        LatLng p1 = new LatLng(-23.6013724,-46.6632493);
-        mMap.addMarker(new MarkerOptions().position(p1).title("Hospital 2"));
+        LatLng p1 = new LatLng(-23.4622912,-46.5452652);
+        mMap.addMarker(new MarkerOptions().position(p1).title("Hospital Unimed"));
+
+        LatLng p3 = new LatLng(23.4603592,-46.5408878);
+        mMap.addMarker(new MarkerOptions().position(p3).title("Hospital Municipal da Criança e do Adolescente (HMCA)"));
+
+        LatLng p4 = new LatLng(-23.4528992,-46.5162774);
+        mMap.addMarker(new MarkerOptions().position(p4).title("Hospital Municipal de Urgência"));
+
+        LatLng p5 = new LatLng(-23.4600464,-46.5425348);
+        mMap.addMarker(new MarkerOptions().position(p5).title("HBC Saúde"));
+
+        LatLng p6 = new LatLng(23.462585,-46.5500614);
+        mMap.addMarker(new MarkerOptions().position(p6).title("Hospital CEMEG"));
 
         CameraPosition cameraPosition = new CameraPosition.Builder().zoom(13).target(p).build();
 
@@ -135,9 +147,7 @@ public class GoogleApiMaps extends FragmentActivity implements OnMapReadyCallbac
 
         alertDialog.show();
     }
-    /**
-     * @author Douglas Coelho Goveia de Almeida
-     */
+
     private void startGettingLocations() {
 
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);

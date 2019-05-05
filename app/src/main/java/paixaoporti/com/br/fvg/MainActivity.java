@@ -1,5 +1,6 @@
 package paixaoporti.com.br.fvg;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -46,10 +47,8 @@ public class MainActivity extends AppCompatActivity
         novoRelato.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick (View view){
-
                 Intent f = new Intent(MainActivity.this,NovoRelatoActivity.class);
                 startActivity(f);
-
             }
 
         });
@@ -57,9 +56,11 @@ public class MainActivity extends AppCompatActivity
         listarRelato.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick (View view){
-
+                ProgressDialog progressDialog = ProgressDialog.show ( MainActivity.this, "Aguarde",
+                        "Por Favor Aguarde..." );
                 Intent f = new Intent(MainActivity.this,ListarRelatosActivity.class);
                 startActivity(f);
+                progressDialog.dismiss();
             }
 
         });
@@ -67,7 +68,6 @@ public class MainActivity extends AppCompatActivity
         hospitaisRelato.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick (View view){
-
                 Intent f = new Intent(MainActivity.this,GoogleApiMaps.class);
                 startActivity(f);
             }
@@ -125,47 +125,54 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
-
+            shareText();
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    private void shareText() {
+        // cria a intent e define a ação
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        // tipo de conteúdo da intent
+        intent.setType("text/plain");
+        // string a ser enviada para outra intent
+        intent.putExtra(Intent.EXTRA_TEXT, "Link para baixa Aplicativo (FARMACOVIGILÂNCIA): https://mouseweb.com.br/" );
+        // inicia a intent
+        startActivity(intent);
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+
         String PREF_NAME = "LoginActivityPreferences";
+
         int id = item.getItemId();
 
         if (id == R.id.homeMenu){
 
-//             teste fragment = new teste ();
-//            FragmentTransaction fragmentTrasaction = getSupportFragmentManager().beginTransaction();
-//            fragmentTrasaction.replace(R.id.pag_menu, fragment);
-//            fragmentTrasaction.commit();
 
         } else if (id == R.id.novoRelatoMenu) {
-
             Intent intent = new Intent (this, NovoRelatoActivity.class);
             startActivity(intent);
 
         } else if (id == R.id.listarRelatoMenu) {
-
-            Intent intent = new Intent (this, ListarRelatosActivity.class);
-            startActivity(intent);
+            ProgressDialog progressDialog = ProgressDialog.show ( MainActivity.this, "Aguarde",
+                    "Por Favor Aguarde..." );
+            Intent f = new Intent(MainActivity.this,ListarRelatosActivity.class);
+            startActivity(f);
+            progressDialog.dismiss();
 
         } else if (id == R.id.hopitalMenu) {
-
             Intent intent = new Intent (this, GoogleApiMaps.class);
             startActivity(intent);
 
         } else if (id == R.id.ajudaMenu) {
-
             Intent intent = new Intent (this, AjudaActivity.class);
             startActivity(intent);
 
         } else if (id == R.id.nortificadorMenu) {
-
             Intent intent = new Intent (this, PerfilActivity.class);
             startActivity(intent);
 
