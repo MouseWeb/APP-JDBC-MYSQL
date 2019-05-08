@@ -80,11 +80,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             if ( sp.getString("login", "") != null || sp.getString("login", "") != ""
                     && sp.getString("senha", "") != null || sp.getString("senha", "") != "") {
 
-                ProgressDialog progressDialog = ProgressDialog.show ( LoginActivity.this, "Aguarde",
+                ProgressDialog.show ( LoginActivity.this, "Aguarde",
                         "Por Favor Aguarde..." );
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
-                progressDialog.dismiss();
             }
 
         } else {

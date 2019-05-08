@@ -56,11 +56,8 @@ public class MainActivity extends AppCompatActivity
         listarRelato.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick (View view){
-                ProgressDialog progressDialog = ProgressDialog.show ( MainActivity.this, "Aguarde",
-                        "Por Favor Aguarde..." );
                 Intent f = new Intent(MainActivity.this,ListarRelatosActivity.class);
                 startActivity(f);
-                progressDialog.dismiss();
             }
 
         });
@@ -114,7 +111,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflar o menu; isso adiciona itens à barra de ação, se estiver presente.
+        // Inflar o menu = isso adiciona itens à barra de ação, se estiver presente.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
@@ -158,11 +155,10 @@ public class MainActivity extends AppCompatActivity
             startActivity(intent);
 
         } else if (id == R.id.listarRelatoMenu) {
-            ProgressDialog progressDialog = ProgressDialog.show ( MainActivity.this, "Aguarde",
-                    "Por Favor Aguarde..." );
+            /*ProgressDialog.show ( MainActivity.this, "Aguarde",
+                    "Por Favor Aguarde..." );*/
             Intent f = new Intent(MainActivity.this,ListarRelatosActivity.class);
             startActivity(f);
-            progressDialog.dismiss();
 
         } else if (id == R.id.hopitalMenu) {
             Intent intent = new Intent (this, GoogleApiMaps.class);

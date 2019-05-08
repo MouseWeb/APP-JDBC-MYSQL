@@ -1,6 +1,10 @@
 package Controller;
 
-public class NovoRelatoControle {
+import java.io.Serializable;
+
+public class NovoRelatoControle implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private int id;
     private String dosagem;

@@ -35,9 +35,9 @@ public class NovoRelatoDAO {
             }
 
         } catch (SQLException e) {
-            Log.e ( "BANCO", e.getMessage ( ) );
+            Log.e ( "BANCO (SQLException): ", e.getMessage ( ) );
         } catch (Exception e) {
-            Log.e ( "BANCO", e.getMessage ( ) );
+            Log.e ( "BANCO (Exception): ", e.getMessage ( ) );
         } finally {
             JDBCconnection.closeConnection(con, stmt);
         }

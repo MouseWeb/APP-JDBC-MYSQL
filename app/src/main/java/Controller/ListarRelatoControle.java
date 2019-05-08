@@ -1,6 +1,10 @@
 package Controller;
 
-public class ListarRelatoControle {
+import java.io.Serializable;
+
+public class ListarRelatoControle implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private int id;
     private String dosagem;

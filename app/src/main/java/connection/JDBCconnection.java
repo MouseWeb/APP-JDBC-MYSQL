@@ -32,13 +32,11 @@ public class JDBCconnection {
 
             Log.e("BANCO: ", "Conexão Aberta");
         } catch (SQLException e) {
-            throw new DbException("BANCO (SQLException): " + e.getMessage());
-        } catch (NumberFormatException e) {
-            throw new DbIntegrityException ("BANCO (NumberFormatException): " + e.getMessage());
+            Log.e("BANCO (SQLException): ", e.getMessage());
         } catch (IllegalAccessException e) {
-            throw new DbException("BANCO (IllegalAccessException): " + e.getMessage());
+            Log.e("BANCO (IllegalAccess): ", e.getMessage());
         } catch (Exception e) {
-            throw new DbException("BANCO (Exception): " + e.getMessage());
+            Log.e("BANCO (Exception): ", e.getMessage());
         }
         return cn;
     }

@@ -18,6 +18,7 @@ public class ListarRelatoDAO implements ListarRelatoInterface {
 
     LoginControle c = new LoginControle ( );
 
+    @Override
     public void buscarRelatos(String login, String senha) {
 
         Connection con = JDBCconnection.getConnection ( );
@@ -49,6 +50,7 @@ public class ListarRelatoDAO implements ListarRelatoInterface {
 
     }
 
+    @Override
     public List <ListarRelatoControle> getListaRelato() {
 
         Connection con = JDBCconnection.getConnection ( );
@@ -82,12 +84,12 @@ public class ListarRelatoDAO implements ListarRelatoInterface {
                 list.add ( obj );
                 System.out.println ( obj );
             }
-
+            Log.e("LISTA: ", "Lista Sucesso!");
             return list;
         } catch (SQLException e) {
-            Log.e ( "BANCO", e.getMessage ( ) );
+            Log.e ( "BANCO (SQLException): ", e.getMessage ( ) );
         } catch (Exception e) {
-            Log.e ( "BANCO", e.getMessage ( ) );
+            Log.e ( "BANCO (Exception); ", e.getMessage ( ) );
         } finally {
             JDBCconnection.closeConnection ( con, stmt, rs );
         }
