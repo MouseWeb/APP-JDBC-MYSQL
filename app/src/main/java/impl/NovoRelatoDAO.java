@@ -10,12 +10,14 @@ import java.sql.SQLException;
 import Controller.LoginControle;
 import Controller.NovoRelatoControle;
 import connection.JDBCconnection;
+import model.NovoRelatoInterface;
 
-public class NovoRelatoDAO {
+public class NovoRelatoDAO implements NovoRelatoInterface {
 
     LoginControle c = new LoginControle ( );
 
-    public void buscarUsuario(String login, String senha) {
+    @Override
+    public void userFindById(String login, String senha) {
 
         Connection con = JDBCconnection.getConnection ( );
 
@@ -35,25 +37,27 @@ public class NovoRelatoDAO {
             }
 
         } catch (SQLException e) {
-            Log.e ( "BANCO (SQLException): ", e.getMessage ( ) );
+            Log.e ( "BANCO", e.getMessage ( ) );
         } catch (Exception e) {
-            Log.e ( "BANCO (Exception): ", e.getMessage ( ) );
+            Log.e ( "BANCO", e.getMessage ( ) );
         } finally {
-            JDBCconnection.closeConnection(con, stmt);
+            JDBCconnection.closeConnection ( con, stmt, rs );
         }
 
     }
 
-    public void create(NovoRelatoControle n) {
+    public void insertRelato(NovoRelatoControle n) {
 
         Connection con = JDBCconnection.getConnection();
 
         PreparedStatement stmt = null;
 
         try {
-            stmt = con.prepareStatement(" INSERT INTO tbl_relatos " +
-                    " ( rel_nome, rel_dosagem, rel_qd_med_ini, rel_qd_med_inter, rel_gravidade, rel_descricao, idusuario) " +
-                    " VALUES (?,?,?,?,?,?,?)");
+            stmt = con.prepareStatement(" INSERT INTO tbl_relatos "
+                                         + " ( rel_nome, rel_dosagem, rel_qd_med_ini, rel_qd_med_inter, "
+                                         + " rel_gravidade, rel_descricao, idusuario) "
+                                         + " VALUES (?,?,?,?,?,?,?) ");
+
             stmt.setString ( 1, n.getMedicaemnto ());
             stmt.setString ( 2, n.getDosagem ());
             stmt.setString ( 3, n.getDataInicio ());
@@ -72,4 +76,5 @@ public class NovoRelatoDAO {
         }
 
     }
+
 }

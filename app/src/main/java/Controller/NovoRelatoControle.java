@@ -1,6 +1,7 @@
 package Controller;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class NovoRelatoControle implements Serializable {
 
@@ -13,6 +14,21 @@ public class NovoRelatoControle implements Serializable {
     private String gravidade;
     private String descricao;
     private String medicaemnto;
+
+    public NovoRelatoControle(){
+
+    }
+
+    public NovoRelatoControle(int id, String dosagem, String dataInicio, String dataTermino, String gravidade,
+                              String descricao, String medicaemnto) {
+        this.id = id;
+        this.dosagem = dosagem;
+        this.dataInicio = dataInicio;
+        this.dataTermino = dataTermino;
+        this.gravidade = gravidade;
+        this.descricao = descricao;
+        this.medicaemnto = medicaemnto;
+    }
 
     public int getId() {
         return id;
@@ -68,6 +84,38 @@ public class NovoRelatoControle implements Serializable {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof NovoRelatoControle)) return false;
+        NovoRelatoControle that = (NovoRelatoControle) o;
+        return getId ( ) == that.getId ( ) &&
+                getDosagem ( ).equals ( that.getDosagem ( ) ) &&
+                getDataInicio ( ).equals ( that.getDataInicio ( ) ) &&
+                getDataTermino ( ).equals ( that.getDataTermino ( ) ) &&
+                getGravidade ( ).equals ( that.getGravidade ( ) ) &&
+                getDescricao ( ).equals ( that.getDescricao ( ) ) &&
+                getMedicaemnto ( ).equals ( that.getMedicaemnto ( ) );
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash ( getId ( ), getDosagem ( ), getDataInicio ( ), getDataTermino ( ), getGravidade ( ), getDescricao ( ), getMedicaemnto ( ) );
+    }
+
+    @Override
+    public String toString() {
+        return "NovoRelatoControle{" +
+                "id=" + id +
+                ", dosagem='" + dosagem + '\'' +
+                ", dataInicio='" + dataInicio + '\'' +
+                ", dataTermino='" + dataTermino + '\'' +
+                ", gravidade='" + gravidade + '\'' +
+                ", descricao='" + descricao + '\'' +
+                ", medicaemnto='" + medicaemnto + '\'' +
+                '}';
     }
 
 }

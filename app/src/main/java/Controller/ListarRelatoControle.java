@@ -1,6 +1,7 @@
 package Controller;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class ListarRelatoControle implements Serializable {
 
@@ -82,6 +83,26 @@ public class ListarRelatoControle implements Serializable {
 
     public void setMedicaemnto(String medicaemnto) {
         this.medicaemnto = medicaemnto;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ListarRelatoControle)) return false;
+        ListarRelatoControle that = (ListarRelatoControle) o;
+        return getId ( ) == that.getId ( ) &&
+                getDosagem ( ).equals ( that.getDosagem ( ) ) &&
+                dataInicio.equals ( that.dataInicio ) &&
+                getDataTermino ( ).equals ( that.getDataTermino ( ) ) &&
+                getGravidade ( ).equals ( that.getGravidade ( ) ) &&
+                getDescricao ( ).equals ( that.getDescricao ( ) ) &&
+                getMedicaemnto ( ).equals ( that.getMedicaemnto ( ) );
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash ( getId ( ), getDosagem ( ),
+                dataInicio, getDataTermino ( ), getGravidade ( ), getDescricao ( ), getMedicaemnto ( ) );
     }
 
     @Override

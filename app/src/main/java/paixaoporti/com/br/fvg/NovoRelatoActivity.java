@@ -21,6 +21,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -28,6 +31,7 @@ import com.google.zxing.integration.android.IntentResult;
 import java.util.Calendar;
 import Controller.NovoRelatoControle;
 import impl.NovoRelatoDAO;
+import util.Mail;
 
 public class NovoRelatoActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -53,15 +57,15 @@ public class NovoRelatoActivity extends AppCompatActivity implements View.OnClic
         getSupportActionBar().setHomeButtonEnabled(true);       //Ativar o botão
         getSupportActionBar().setTitle("Novo Relato");          //Titulo para ser exibido na sua Action Bar em frente à seta
 
-        inicioDataNovoRelato    = (TextView) findViewById ( R.id.inicioTratamentoNovoRelato );
-        terminoDataNovoRelato   = (TextView) findViewById ( R.id.fimTratamentoNovoRelato );
-        medicamentoNovoRelato   = (EditText) findViewById ( R.id.medicamentoNovoRelato );
-        dosagemNovoRelato       = (EditText) findViewById ( R.id.dosagemMedicamentoNovoRelato );
-        descricaoNovoRelato     = (EditText) findViewById ( R.id.descricaoNovoRelato );
-        gravidadeNovoRelato     = (EditText) findViewById ( R.id.gravidadeNovoRelato );
-        gravarNovoRelato        = (ImageView) findViewById ( R.id.gravarNovoRelato );
-        codeBarraPaciente       = (ImageView) findViewById ( R.id.codeBarraPaciente );
-        cancelarEventoADV       = (ImageView) findViewById ( R.id.cancelarEventoADV );
+        inicioDataNovoRelato    = (TextView) findViewById ( R.id.textinicioTratamentoNovoRelato );
+        terminoDataNovoRelato   = (TextView) findViewById ( R.id.textfimTratamentoNovoRelato );
+        medicamentoNovoRelato   = (EditText) findViewById ( R.id.editmedicamentoNovoRelato );
+        dosagemNovoRelato       = (EditText) findViewById ( R.id.editdosagemMedicamentoNovoRelato );
+        descricaoNovoRelato     = (EditText) findViewById ( R.id.editdescricaoNovoRelato );
+        gravidadeNovoRelato     = (EditText) findViewById ( R.id.editgravidadeNovoRelato );
+        gravarNovoRelato        = (ImageView) findViewById ( R.id.imggravarNovoRelato );
+        codeBarraPaciente       = (ImageView) findViewById ( R.id.imgcodeBarraPaciente );
+        cancelarEventoADV       = (ImageView) findViewById ( R.id.imgcancelarEventoADV );
 
         gravarNovoRelato.setOnClickListener( this );
         cancelarEventoADV.setOnClickListener ( this );
@@ -166,28 +170,6 @@ public class NovoRelatoActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
-    public void salvarNovoRelato() {
-
-        NovoRelatoControle n = new NovoRelatoControle ();
-        NovoRelatoDAO dao = new NovoRelatoDAO ();
-
-        SharedPreferences sp = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-
-        String login = sp.getString("login", "");
-        String senha = sp.getString("senha", "");
-
-        dao.buscarUsuario ( login, senha );
-
-        n.setMedicaemnto ( medicamentoNovoRelato.getText().toString () );
-        n.setDosagem ( dosagemNovoRelato.getText ().toString () );
-        n.setDataInicio ( inicioDataNovoRelato.getText ().toString () );
-        n.setDataTermino ( terminoDataNovoRelato.getText ().toString () );
-        n.setGravidade ( gravidadeNovoRelato.getText ().toString () );
-        n.setDescricao ( descricaoNovoRelato.getText ().toString () );
-
-        dao.create ( n );
-    }
-
     public void validacao() {
 
         String medicamentoCompleteGet   = medicamentoNovoRelato.getText ( ).toString ( );
@@ -220,6 +202,80 @@ public class NovoRelatoActivity extends AppCompatActivity implements View.OnClic
             salvarNovoRelato( );
             limparCampos();
         }
+
+    }
+
+    public void salvarNovoRelato() {
+
+        NovoRelatoControle n = new NovoRelatoControle ();
+        NovoRelatoDAO dao = new NovoRelatoDAO ();
+
+        SharedPreferences sp = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+
+        String login = sp.getString("login", "");
+        String senha = sp.getString("senha", "");
+
+        dao.userFindById ( login, senha );
+
+        n.setMedicaemnto ( medicamentoNovoRelato.getText().toString () );
+        n.setDosagem ( dosagemNovoRelato.getText ().toString () );
+        n.setDataInicio ( inicioDataNovoRelato.getText ().toString () );
+        n.setDataTermino ( terminoDataNovoRelato.getText ().toString () );
+        n.setGravidade ( gravidadeNovoRelato.getText ().toString () );
+        n.setDescricao ( descricaoNovoRelato.getText ().toString () );
+
+        dao.insertRelato ( n );
+
+        enviarEmail();
+
+    }
+
+    private void enviarEmail(){
+
+        final String medicamento = medicamentoNovoRelato.getText().toString();
+        final String dosagem = dosagemNovoRelato.getText().toString();
+        final String inicioData = inicioDataNovoRelato.getText().toString();
+        final String terminoData = terminoDataNovoRelato.getText().toString();
+        final String gravidade = gravidadeNovoRelato.getText().toString();
+        final String descricao = descricaoNovoRelato.getText().toString();
+
+        //final String email = txtEmail.getText().toString();
+        final String email = "douglas.developer.app@gmail.com";
+
+        final String subject = "Relato de evento adverso do merdicamento";
+        final String body = "<b>" + " Medicamento: " + "</b>" + medicamento + "<br>" +
+                            "<b>" + " Dosagem: " + "</b>" + dosagem + "<br>" +
+                            "<b>" + " Data de Inicio: " + "</b>" + inicioData + "<br>" +
+                            "<b>" + " Data de Término: " + "</b>" + terminoData + "<br>" +
+                            "<b>" + " Gravidade: " + "</b>" + gravidade + "<br>" +
+                            "<b>" + " Descrição: " + "</b>" + descricao + "<br>";
+
+        new Thread(new Runnable(){
+            @Override
+            public void run() {
+                Mail m = new Mail();
+
+                String[] toArr = {email};
+                m.setTo(toArr);
+
+                //m.setFrom("fvg@mouseweb.com.br"); //nome do email de quem enviar
+                m.setSubject(subject);
+                m.setBody(body);
+
+                try {
+                    //m.addAttachment("pathDoAnexo");//anexo opcional
+                    m.send();
+                }
+                catch(RuntimeException rex){ }//erro ignorado
+                catch(Exception e) {
+                    e.printStackTrace();
+                    System.exit(0);
+                }
+            }
+
+        }).start();
+        Toast.makeText(getApplicationContext(), "Relato enviado para o email!", Toast.LENGTH_SHORT).show();
+
     }
 
     public void limparCampos() {
@@ -240,13 +296,9 @@ public class NovoRelatoActivity extends AppCompatActivity implements View.OnClic
         terminoDataNovoRelato.setText("");
     }
 
-    // Se precisar desse método pra mais de uma classe, mude ele pra ser estático.
     private boolean temConexao(Context classe) {
-        //Pego a conectividade do contexto passado como argumento
         ConnectivityManager gerenciador = (ConnectivityManager) classe.getSystemService( Context.CONNECTIVITY_SERVICE);
-        //Crio a variável informacao que recebe as informações da Rede
         NetworkInfo informacao = gerenciador.getActiveNetworkInfo();
-        //Se o objeto for nulo ou nao tem conectividade retorna false
         if ((informacao != null) && (informacao.isConnectedOrConnecting()) && (informacao.isAvailable())) {
             return true;
         }
@@ -284,11 +336,11 @@ public class NovoRelatoActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void onClick(View v) {
 
-        if (v.getId() == R.id.gravarNovoRelato ) {
+        if (v.getId() == R.id.imggravarNovoRelato ) {
 
             validacao();
 
-        }else if(v.getId () == R.id.cancelarEventoADV ){
+        }else if(v.getId () == R.id.imgcancelarEventoADV ){
 
             Intent f = new Intent(this,MainActivity.class);
             startActivity(f);

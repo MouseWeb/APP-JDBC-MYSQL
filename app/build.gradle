@@ -30,5 +30,8 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.journeyapps:zxing-android-embedded:3.2.0@aar'
     implementation 'com.google.zxing:core:3.2.1'
+    implementation files('libs/activation.jar')
+    implementation files('libs/additionnal.jar')
+    implementation files('libs/mail.jar')
     implementation files('libs/mysql-connector-java-5.1.6-bin.jar')
 }

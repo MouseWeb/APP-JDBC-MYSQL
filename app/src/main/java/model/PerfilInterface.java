@@ -6,8 +6,10 @@ import Controller.PerfilControle;
 
 public interface PerfilInterface {
 
-    void buscarPerfil(String login, String senha);
+    void userFindById(String login, String senha);
+
     void update(PerfilControle obj);
+
     List <PerfilControle> getListaPerfil();
 
 }

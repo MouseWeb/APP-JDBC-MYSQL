@@ -19,7 +19,7 @@ public class PerfilDAO implements PerfilInterface {
     LoginControle c = new LoginControle ( );
 
     @Override
-    public void buscarPerfil(String login, String senha) {
+    public void userFindById(String login, String senha) {
 
         Connection con = JDBCconnection.getConnection ( );
 
@@ -112,7 +112,6 @@ public class PerfilDAO implements PerfilInterface {
                 System.out.println ( obj );
             }
             Log.e("PERFIL: ", "Lista Perfil Sucesso!");
-
         } catch (SQLException e) {
             Log.e ( "BANCO (SQLException): ", e.getMessage ( ) );
         } catch (Exception e) {

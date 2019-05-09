@@ -41,24 +41,46 @@
         android:inputType="textPassword"
         android:singleLine="true" />
 
+    <LinearLayout
+        android:layout_width="378dp"
+        android:layout_marginTop="20dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <CheckedTextView
+            android:id="@+id/cadastroUser"
+            android:layout_width="150dp"
+            android:layout_height="34dp"
+            android:layout_gravity="left"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="8dp"
+            android:text="Registrar ?"
+            android:textStyle="bold" />
+
+        <CheckedTextView
+            android:id="@+id/esqueceuSenha"
+            android:layout_width="150dp"
+            android:layout_height="34dp"
+            android:layout_gravity="right"
+            android:layout_marginLeft="22dp"
+            android:layout_marginTop="10dp"
+            android:text="Esqueceu sua senha ?"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
     <Button
         android:id="@+id/loginEntrar"
         android:layout_width="276dp"
-        android:layout_height="56dp"
+        android:layout_height="49dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/fundo_botao"
+        android:onClick="signIn"
         android:text="Entrar"
-        android:onClick="signIn" />
-
-
-    <CheckedTextView
-        android:id="@+id/cadastroUser"
-        android:layout_width="wrap_content"
-        android:layout_height="53dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="45dp"
-        android:textStyle="bold"
-        android:text="Não tem uma conta? crie uma!" />
+        android:textAllCaps="true"
+        android:textColor="#FFFFFF"
+        android:textColorHint="@android:color/white"
+        android:textStyle="bold" />
 
 </LinearLayout>

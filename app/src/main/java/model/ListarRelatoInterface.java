@@ -5,7 +5,8 @@ import Controller.ListarRelatoControle;
 
 public interface ListarRelatoInterface {
 
-    void buscarRelatos(String login, String senha);
+    void userFindById(String login, String senha);
+
     List <ListarRelatoControle> getListaRelato();
 
 }

@@ -54,7 +54,7 @@ public class PerfilActivity extends AppCompatActivity {
             mostraAlerta();
             return;
         } else {
-            dao.buscarPerfil ( login, senha );
+            dao.userFindById ( login, senha );
 
             List<PerfilControle> list = dao.getListaPerfil ();
 

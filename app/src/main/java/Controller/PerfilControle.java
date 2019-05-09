@@ -1,6 +1,7 @@
 package Controller;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class PerfilControle implements Serializable {
 
@@ -69,6 +70,23 @@ public class PerfilControle implements Serializable {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PerfilControle)) return false;
+        PerfilControle that = (PerfilControle) o;
+        return getNome ( ).equals ( that.getNome ( ) ) &&
+                getEmail ( ).equals ( that.getEmail ( ) ) &&
+                getTelefone ( ).equals ( that.getTelefone ( ) ) &&
+                getLogin ( ).equals ( that.getLogin ( ) ) &&
+                getSenha ( ).equals ( that.getSenha ( ) );
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash ( getNome ( ), getEmail ( ), getTelefone ( ), getLogin ( ), getSenha ( ) );
+    }
+
+    @Override
     public String toString() {
         return "PerfilControle{" +
                 "nome='" + nome + '\'' +
@@ -78,4 +96,5 @@ public class PerfilControle implements Serializable {
                 ", senha='" + senha + '\'' +
                 '}';
     }
+
 }

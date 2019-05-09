@@ -50,10 +50,10 @@ public class CadastroDAO {
 
         try {
             stmt = con.prepareStatement("INSERT INTO tbl_usuarios (usu_nome,usu_login,usu_senha,usu_nivel) VALUES (?,?,?,?)");
-            stmt.setString(1, c.getNome());
+            stmt.setString( 1, c.getNome());
             stmt.setString( 2, c.getUser());
             stmt.setString( 3, c.getSenha());
-            stmt.setString( 4,c.getNivel());
+            stmt.setString( 4, c.getNivel());
 
             stmt.executeUpdate();
 

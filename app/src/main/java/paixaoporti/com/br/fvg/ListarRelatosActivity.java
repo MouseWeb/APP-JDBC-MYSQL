@@ -45,7 +45,7 @@ public class ListarRelatosActivity extends AppCompatActivity {
             mostraAlerta();
             return;
         } else {
-            dao.buscarRelatos ( login, senha );
+            dao.userFindById ( login, senha );
         }
 
         // lista
