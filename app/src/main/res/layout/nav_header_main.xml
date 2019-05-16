@@ -20,18 +20,16 @@
         app:srcCompat="@drawable/avatar" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textNome"
         android:layout_width="309dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
-        android:text="@string/nav_header_subtitle"
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/tex"
+        android:id="@+id/textMail"
         android:layout_width="311dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:text="@string/nav_header_desc" />
+        android:layout_marginLeft="15dp" />
 
 </LinearLayout>

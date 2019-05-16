@@ -2,7 +2,7 @@ package model;
 
 import java.util.List;
 
-import Controller.PerfilControle;
+import controller.PerfilControle;
 
 public interface PerfilInterface {
 

@@ -7,11 +7,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import Controller.CadastroControle;
+import controller.CadastroControle;
 import connection.JDBCconnection;
+import model.CadastroInterface;
+import model.PerfilInterface;
 
-public class CadastroDAO {
+public class CadastroDAO implements CadastroInterface {
 
+    @Override
     public boolean checkLogin(String loginC, String senhaC) {
 
         Connection con = JDBCconnection.getConnection();
@@ -33,7 +36,8 @@ public class CadastroDAO {
             }
 
         } catch (SQLException ex) {
-            Logger.getLogger(LoginDAO.class.getName()).log( Level.SEVERE, null, ex.getMessage());
+            //Logger.getLogger(LoginDAO.class.getName()).log( Level.SEVERE, null, ex.getMessage());
+            Log.e("CADASTRO", "Erro ao consulta se já existe! " + ex.getMessage());
         } finally {
             JDBCconnection.closeConnection(con, stmt, rs);
         }
@@ -42,6 +46,7 @@ public class CadastroDAO {
 
     }
 
+    @Override
     public void create(CadastroControle c) {
 
         Connection con = JDBCconnection.getConnection();
@@ -49,11 +54,13 @@ public class CadastroDAO {
         PreparedStatement stmt = null;
 
         try {
-            stmt = con.prepareStatement("INSERT INTO tbl_usuarios (usu_nome,usu_login,usu_senha,usu_nivel) VALUES (?,?,?,?)");
+            stmt = con.prepareStatement(" INSERT INTO tbl_usuarios (usu_nome,usu_login,usu_senha,usu_nivel,usu_email) "
+                    + " VALUES (?,?,?,?,?) ");
             stmt.setString( 1, c.getNome());
             stmt.setString( 2, c.getUser());
             stmt.setString( 3, c.getSenha());
             stmt.setString( 4, c.getNivel());
+            stmt.setString( 5, c.getEmail());
 
             stmt.executeUpdate();
 

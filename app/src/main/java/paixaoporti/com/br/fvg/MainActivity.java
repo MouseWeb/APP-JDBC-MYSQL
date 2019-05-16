@@ -1,14 +1,19 @@
 package paixaoporti.com.br.fvg;
 
-import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -17,15 +22,24 @@ import android.view.View;
 import android.widget.ImageView;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.widget.TextView;
+
+import java.util.List;
+
+import controller.MainControle;
+import impl.MainDAO;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    MainDAO dao = new MainDAO ();
 
     private ImageView novoRelato;
     private ImageView listarRelato;
     private ImageView hospitaisRelato;
 
     private static final String PREF_NAME = "MainActivityPreferences";
+    private static final String PREF_NENU = "LoginActivityPreferences";
     private int count1;
 
     private SharedPreferences.OnSharedPreferenceChangeListener callback = new SharedPreferences.OnSharedPreferenceChangeListener(){
@@ -43,6 +57,38 @@ public class MainActivity extends AppCompatActivity
         novoRelato      = (ImageView) findViewById(R.id.novoRelato);
         listarRelato    = (ImageView) findViewById(R.id.listarRelato);
         hospitaisRelato = (ImageView) findViewById(R.id.hospitais);
+
+        // Obtém a referência do layout de navegação
+        NavigationView navigation = (NavigationView) findViewById(R.id.nav_view);
+        // Obtém a referência da view de cabeçalho
+        View headerView = navigation.getHeaderView(0);
+
+        // Obtém a referência do nome, email
+        TextView nome = (TextView) headerView.findViewById(R.id.textNome);
+        TextView email = (TextView) headerView.findViewById(R.id.textMail);
+
+        SharedPreferences sp = getSharedPreferences(PREF_NENU, MODE_PRIVATE);
+
+        String login = sp.getString("login", "");
+        String senha = sp.getString("senha", "");
+
+        if ( temConexao(MainActivity.this) == false ) {
+            mostraAlerta();
+            return;
+        } else {
+            dao.userFindById ( login, senha );
+
+            List <MainControle> list = dao.getPerfilMenu ();
+
+            for( MainControle d : list ) {
+                System.out.println ( d.getNome () );
+                System.out.println ( d.getEmail () );
+                nome.setText ( d.getNome () );
+                email.setText ( d.getEmail () );
+
+            }
+
+        }
 
         novoRelato.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,12 +137,47 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
         SharedPreferences sp1 = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         count1 = sp1.getInt("count_1", 0);
         Log.i("Script", "COUNT 1: "+count1);
         sp1.registerOnSharedPreferenceChangeListener(callback);
 
+    }
+
+    private boolean temConexao(Context classe) {
+        ConnectivityManager gerenciador = (ConnectivityManager) classe.getSystemService( Context.CONNECTIVITY_SERVICE);
+        NetworkInfo informacao = gerenciador.getActiveNetworkInfo();
+        if ((informacao != null) && (informacao.isConnectedOrConnecting()) && (informacao.isAvailable())) {
+            return true;
+        }
+        return false;
+    }
+
+    private void mostraAlerta() {
+        AlertDialog.Builder informa = new AlertDialog.Builder(MainActivity.this);
+        informa.setMessage("Sem conexão com a internet!");
+        informa.setNeutralButton("Voltar", null).show();
+        showSettingsAlert();
+    }
+
+    public void showSettingsAlert() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Sem conexão com a internet!");
+        alertDialog.setMessage("Verifique a conexão com a internet!");
+        alertDialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent( Settings.ACTION_WIRELESS_SETTINGS );
+                startActivity(intent);
+            }
+        });
+
+        alertDialog.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        alertDialog.show();
     }
 
     @Override

@@ -14,7 +14,7 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="295dp"
-        android:layout_height="137dp"
+        android:layout_height="104dp"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
         app:srcCompat="@drawable/cadastro" />
@@ -29,6 +29,17 @@
         android:id="@+id/nameCadastro"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="30dp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/fundo_caixa_texto"
+        android:padding="16dp"
+        android:textColorHint="@android:color/white"
+        android:hint="E-Mail"
+        android:id="@+id/novo_user_email"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp" />
 
     <EditText
         android:layout_width="match_parent"

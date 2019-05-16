@@ -11,11 +11,10 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import java.util.List;
 
-import Controller.PerfilControle;
+import controller.PerfilControle;
 import impl.PerfilDAO;
 
 public class PerfilActivity extends AppCompatActivity {

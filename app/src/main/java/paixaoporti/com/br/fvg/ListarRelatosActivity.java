@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
-import Controller.ListarRelatoControle;
+import controller.ListarRelatoControle;
 import impl.ListarRelatoDAO;
 
 public class ListarRelatosActivity extends AppCompatActivity {

@@ -55,7 +55,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginLeft="8dp"
             android:text="Registrar ?"
-            android:textStyle="bold" />
+            android:textColor="#337ab7" />
 
         <CheckedTextView
             android:id="@+id/esqueceuSenha"
@@ -65,7 +65,7 @@
             android:layout_marginLeft="22dp"
             android:layout_marginTop="10dp"
             android:text="Esqueceu sua senha ?"
-            android:textStyle="bold" />
+            android:textColor="#337ab7" />
 
     </LinearLayout>
 

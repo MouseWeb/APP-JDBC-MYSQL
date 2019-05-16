@@ -7,8 +7,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import Controller.LoginControle;
-import Controller.NovoRelatoControle;
+import controller.LoginControle;
+import controller.NovoRelatoControle;
 import connection.JDBCconnection;
 import model.NovoRelatoInterface;
 

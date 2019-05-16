@@ -1,4 +1,4 @@
-package Controller;
+package controller;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -11,34 +11,20 @@ public class CadastroControle implements Serializable {
     private String nome;
     private String user;
     private String senha;
+    private String email;
     private String nivel = "M";
 
     public CadastroControle() {
 
     }
 
-    public CadastroControle(int id, String nome, String user, String senha, String nivel) {
+    public CadastroControle(int id, String nome, String user, String senha, String email, String nivel) {
         this.id = id;
         this.nome = nome;
         this.user = user;
         this.senha = senha;
+        this.email = email;
         this.nivel = nivel;
-    }
-
-    public String getNivel() {
-        return nivel;
-    }
-
-    public void setNivel(String nivel) {
-        this.nivel = nivel;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
     }
 
     public int getId() {
@@ -47,6 +33,14 @@ public class CadastroControle implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     public String getUser() {
@@ -65,21 +59,38 @@ public class CadastroControle implements Serializable {
         this.senha = senha;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getNivel() {
+        return nivel;
+    }
+
+    public void setNivel(String nivel) {
+        this.nivel = nivel;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof CadastroControle)) return false;
         CadastroControle that = (CadastroControle) o;
         return getId ( ) == that.getId ( ) &&
-                Objects.equals ( getNome ( ), that.getNome ( ) ) &&
-                Objects.equals ( getUser ( ), that.getUser ( ) ) &&
-                Objects.equals ( getSenha ( ), that.getSenha ( ) ) &&
-                Objects.equals ( getNivel ( ), that.getNivel ( ) );
+                getNome ( ).equals ( that.getNome ( ) ) &&
+                getUser ( ).equals ( that.getUser ( ) ) &&
+                getSenha ( ).equals ( that.getSenha ( ) ) &&
+                getEmail ( ).equals ( that.getEmail ( ) ) &&
+                getNivel ( ).equals ( that.getNivel ( ) );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash ( getId ( ), getNome ( ), getUser ( ), getSenha ( ), getNivel ( ) );
+        return Objects.hash ( getId ( ), getNome ( ), getUser ( ), getSenha ( ), getEmail ( ), getNivel ( ) );
     }
 
     @Override
@@ -89,7 +100,9 @@ public class CadastroControle implements Serializable {
                 ", nome='" + nome + '\'' +
                 ", user='" + user + '\'' +
                 ", senha='" + senha + '\'' +
+                ", email='" + email + '\'' +
                 ", nivel='" + nivel + '\'' +
                 '}';
     }
+
 }

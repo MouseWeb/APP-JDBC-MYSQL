@@ -9,12 +9,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import controller.LoginControle;
-import controller.PerfilControle;
 import connection.JDBCconnection;
-import model.PerfilInterface;
+import controller.LoginControle;
+import controller.MainControle;
+import model.MainInterface;
 
-public class PerfilDAO implements PerfilInterface {
+public class MainDAO implements MainInterface {
 
     LoginControle c = new LoginControle ( );
 
@@ -46,72 +46,39 @@ public class PerfilDAO implements PerfilInterface {
             JDBCconnection.closeConnection ( con, stmt, rs );
         }
 
-        getListaPerfil();
+        getPerfilMenu();
 
     }
 
     @Override
-    public void update(PerfilControle obj) {
+    public List <MainControle> getPerfilMenu() {
 
         Connection con = JDBCconnection.getConnection ( );
         PreparedStatement stmt = null;
         ResultSet rs = null;
 
-        try {
-            stmt = con.prepareStatement  ( "UPDATE department " +
-                                                "SET Name = ? " +
-                                                "WHERE Id = ?" );
-
-            stmt.setInt ( 1, c.getId () );
-
-            stmt.executeUpdate ( );
-
-            Log.e("PERFIL: ", "Update Perfil Sucesso!");
-        }catch (SQLException e) {
-            Log.e ( "BANCO (SQLException): ", e.getMessage ( ) );
-        } catch (Exception e) {
-            Log.e ( "BANCO (Exception); ", e.getMessage ( ) );
-        } finally {
-            JDBCconnection.closeConnection ( con, stmt, rs );
-        }
-
-    }
-
-    @Override
-    public List <PerfilControle> getListaPerfil() {
-
-        Connection con = JDBCconnection.getConnection ( );
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-
-        List <PerfilControle> list = null;
+        List <MainControle> list = null;
         try {
             list = new ArrayList <> ( );
 
             stmt = con.prepareStatement ( " SELECT tbl_usuarios.usu_nome, "
-                                           + "        tbl_usuarios.usu_email, "
-                                           + "        tbl_usuarios.usu_telefone, "
-                                           + "        tbl_usuarios.usu_login, "
-                                           + "        tbl_usuarios.usu_senha "
-                                           + "  FROM tbl_usuarios "
-                                           + "  WHERE tbl_usuarios.idusuario = ? ");
+                    + "        tbl_usuarios.usu_email "
+                    + "  FROM tbl_usuarios "
+                    + "  WHERE tbl_usuarios.idusuario = ? ");
 
             stmt.setInt ( 1, c.getId () );
 
             rs = stmt.executeQuery ( );
 
             while (rs.next ( )) {
-                PerfilControle obj = new PerfilControle ( );
+                MainControle obj = new MainControle ( );
                 obj.setNome ( rs.getString ( "usu_nome" ) );
                 obj.setEmail ( rs.getString ( "usu_email" ) );
-                obj.setTelefone ( rs.getString ( "usu_telefone" ) );
-                obj.setLogin ( rs.getString ( "usu_login" ) );
-                obj.setSenha ( rs.getString ( "usu_senha" ) );
 
                 list.add ( obj );
                 System.out.println ( obj );
             }
-            Log.e("PERFIL: ", "Lista Perfil Sucesso!");
+            Log.e("PERFIL: ", "Lista Perfil Menu Sucesso!");
         } catch (SQLException e) {
             Log.e ( "BANCO (SQLException): ", e.getMessage ( ) );
         } catch (Exception e) {
@@ -121,6 +88,4 @@ public class PerfilDAO implements PerfilInterface {
         }
         return list;
     }
-
 }
-

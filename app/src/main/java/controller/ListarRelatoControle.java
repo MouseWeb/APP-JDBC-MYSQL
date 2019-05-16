@@ -1,9 +1,9 @@
-package Controller;
+package controller;
 
 import java.io.Serializable;
 import java.util.Objects;
 
-public class NovoRelatoControle implements Serializable {
+public class ListarRelatoControle implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -15,12 +15,11 @@ public class NovoRelatoControle implements Serializable {
     private String descricao;
     private String medicaemnto;
 
-    public NovoRelatoControle(){
+    public ListarRelatoControle(){
 
     }
 
-    public NovoRelatoControle(int id, String dosagem, String dataInicio, String dataTermino, String gravidade,
-                              String descricao, String medicaemnto) {
+    public ListarRelatoControle(int id, String dosagem, String dataInicio, String dataTermino, String gravidade, String descricao, String medicaemnto) {
         this.id = id;
         this.dosagem = dosagem;
         this.dataInicio = dataInicio;
@@ -38,14 +37,6 @@ public class NovoRelatoControle implements Serializable {
         this.id = id;
     }
 
-    public String getMedicaemnto() {
-        return medicaemnto;
-    }
-
-    public void setMedicaemnto(String medicaemnto) {
-        this.medicaemnto = medicaemnto;
-    }
-
     public String getDosagem() {
         return dosagem;
     }
@@ -54,7 +45,7 @@ public class NovoRelatoControle implements Serializable {
         this.dosagem = dosagem;
     }
 
-    public String getDataInicio() {
+    public String getDataInicio(String dataInicio) {
         return dataInicio;
     }
 
@@ -86,14 +77,22 @@ public class NovoRelatoControle implements Serializable {
         this.descricao = descricao;
     }
 
+    public String getMedicaemnto() {
+        return medicaemnto;
+    }
+
+    public void setMedicaemnto(String medicaemnto) {
+        this.medicaemnto = medicaemnto;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof NovoRelatoControle)) return false;
-        NovoRelatoControle that = (NovoRelatoControle) o;
+        if (!(o instanceof ListarRelatoControle)) return false;
+        ListarRelatoControle that = (ListarRelatoControle) o;
         return getId ( ) == that.getId ( ) &&
                 getDosagem ( ).equals ( that.getDosagem ( ) ) &&
-                getDataInicio ( ).equals ( that.getDataInicio ( ) ) &&
+                dataInicio.equals ( that.dataInicio ) &&
                 getDataTermino ( ).equals ( that.getDataTermino ( ) ) &&
                 getGravidade ( ).equals ( that.getGravidade ( ) ) &&
                 getDescricao ( ).equals ( that.getDescricao ( ) ) &&
@@ -102,20 +101,17 @@ public class NovoRelatoControle implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash ( getId ( ), getDosagem ( ), getDataInicio ( ), getDataTermino ( ), getGravidade ( ), getDescricao ( ), getMedicaemnto ( ) );
+        return Objects.hash ( getId ( ), getDosagem ( ),
+                dataInicio, getDataTermino ( ), getGravidade ( ), getDescricao ( ), getMedicaemnto ( ) );
     }
 
     @Override
     public String toString() {
-        return "NovoRelatoControle{" +
-                "id=" + id +
-                ", dosagem='" + dosagem + '\'' +
-                ", dataInicio='" + dataInicio + '\'' +
-                ", dataTermino='" + dataTermino + '\'' +
-                ", gravidade='" + gravidade + '\'' +
-                ", descricao='" + descricao + '\'' +
-                ", medicaemnto='" + medicaemnto + '\'' +
-                '}';
+        return " Medicamento: " + medicaemnto + "\n" +
+                " Dosagem: " + dosagem + "\n" +
+                " Data Inicio: " + dataInicio + "\n" +
+                " Data Termino: " + dataTermino + "\n" +
+                " Gravidade: " + gravidade + "\n" +
+                " Descricao: " + descricao ;
     }
-
 }

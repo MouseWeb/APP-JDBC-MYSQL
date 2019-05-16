@@ -1,6 +1,6 @@
 package model;
 
-import Controller.NovoRelatoControle;
+import controller.NovoRelatoControle;
 
 public interface NovoRelatoInterface {
 

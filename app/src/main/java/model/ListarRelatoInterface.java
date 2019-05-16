@@ -1,7 +1,7 @@
 package model;
 
 import java.util.List;
-import Controller.ListarRelatoControle;
+import controller.ListarRelatoControle;
 
 public interface ListarRelatoInterface {
 

@@ -9,8 +9,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import Controller.ListarRelatoControle;
-import Controller.LoginControle;
+import controller.ListarRelatoControle;
+import controller.LoginControle;
 import connection.JDBCconnection;
 import model.ListarRelatoInterface;
 

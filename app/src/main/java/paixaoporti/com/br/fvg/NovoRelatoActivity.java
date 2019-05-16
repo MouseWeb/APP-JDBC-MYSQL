@@ -21,15 +21,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import java.util.Calendar;
-import Controller.NovoRelatoControle;
+import controller.NovoRelatoControle;
 import impl.NovoRelatoDAO;
 import util.Mail;
 
