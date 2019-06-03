@@ -26,6 +26,8 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import java.util.Calendar;
+import java.util.List;
+
 import controller.NovoRelatoControle;
 import impl.NovoRelatoDAO;
 import util.Mail;
@@ -236,8 +238,9 @@ public class NovoRelatoActivity extends AppCompatActivity implements View.OnClic
         final String gravidade = gravidadeNovoRelato.getText().toString();
         final String descricao = descricaoNovoRelato.getText().toString();
 
+
         //final String email = txtEmail.getText().toString();
-        final String email = "douglas.developer.app@gmail.com";
+        //final String email = "douglas.developer.app@gmail.com";
 
         final String subject = "Relato de evento adverso do merdicamento";
         final String body = "<b>" + " Medicamento: " + "</b>" + medicamento + "<br>" +
@@ -252,8 +255,25 @@ public class NovoRelatoActivity extends AppCompatActivity implements View.OnClic
             public void run() {
                 Mail m = new Mail();
 
-                String[] toArr = {email};
-                m.setTo(toArr);
+                NovoRelatoDAO dao = new NovoRelatoDAO ();
+                SharedPreferences sp = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+
+                String login = sp.getString("login", "");
+                String senha = sp.getString("senha", "");
+
+                dao.userFindById ( login, senha );
+
+                List <NovoRelatoControle> list = dao.getMailUser ();
+
+                for( NovoRelatoControle d : list ) {
+                     //System.out.println ( d.getEmail () );
+                     String[] toArr = {d.getEmail ()};
+                     m.setTo(toArr);
+
+                }
+
+                //String[] toArr = {email};
+                //m.setTo(d.getEmail);
 
                 //m.setFrom("fvg@mouseweb.com.br"); //nome do email de quem enviar
                 m.setSubject(subject);
@@ -263,14 +283,15 @@ public class NovoRelatoActivity extends AppCompatActivity implements View.OnClic
                     //m.addAttachment("pathDoAnexo");//anexo opcional
                     m.send();
                 }
+
                 catch(RuntimeException rex){ }//erro ignorado
                 catch(Exception e) {
                     e.printStackTrace();
-                    System.exit(0);
                 }
             }
 
         }).start();
+
         Toast.makeText(getApplicationContext(), "Relato enviado para o email!", Toast.LENGTH_SHORT).show();
 
     }

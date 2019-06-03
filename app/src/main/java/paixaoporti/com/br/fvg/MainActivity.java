@@ -81,8 +81,8 @@ public class MainActivity extends AppCompatActivity
             List <MainControle> list = dao.getPerfilMenu ();
 
             for( MainControle d : list ) {
-                System.out.println ( d.getNome () );
-                System.out.println ( d.getEmail () );
+                //System.out.println ( d.getNome () );
+                //System.out.println ( d.getEmail () );
                 nome.setText ( d.getNome () );
                 email.setText ( d.getEmail () );
 

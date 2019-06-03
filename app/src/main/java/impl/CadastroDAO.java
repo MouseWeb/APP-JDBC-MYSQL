@@ -5,12 +5,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import controller.CadastroControle;
 import connection.JDBCconnection;
 import model.CadastroInterface;
-import model.PerfilInterface;
 
 public class CadastroDAO implements CadastroInterface {
 
@@ -36,7 +33,6 @@ public class CadastroDAO implements CadastroInterface {
             }
 
         } catch (SQLException ex) {
-            //Logger.getLogger(LoginDAO.class.getName()).log( Level.SEVERE, null, ex.getMessage());
             Log.e("CADASTRO", "Erro ao consulta se já existe! " + ex.getMessage());
         } finally {
             JDBCconnection.closeConnection(con, stmt, rs);
@@ -64,7 +60,7 @@ public class CadastroDAO implements CadastroInterface {
 
             stmt.executeUpdate();
 
-            Log.e("CADASTRO: ", "Salvo com sucesso!");
+           // Log.e("CADASTRO: ", "Salvo com sucesso!");
         } catch (SQLException e) {
             Log.e("CADASTRO", "Erro ao salvar! " + e.getMessage());
         } finally {

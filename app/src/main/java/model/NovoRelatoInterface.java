@@ -1,5 +1,7 @@
 package model;
 
+import java.util.List;
+
 import controller.NovoRelatoControle;
 
 public interface NovoRelatoInterface {
@@ -8,4 +10,5 @@ public interface NovoRelatoInterface {
 
     void insertRelato(NovoRelatoControle n);
 
+    List <NovoRelatoControle> getMailUser();
 }

@@ -82,9 +82,9 @@ public class ListarRelatoDAO implements ListarRelatoInterface {
                 obj.setDescricao ( rs.getString ( "rel_descricao" ) );
                 obj.setGravidade ( rs.getString ( "rel_gravidade" ) );
                 list.add ( obj );
-                System.out.println ( obj );
+                //System.out.println ( obj );
             }
-            Log.e("LISTA: ", "Lista Sucesso!");
+           // Log.e("LISTA: ", "Lista Sucesso!");
         } catch (SQLException e) {
             Log.e ( "BANCO (SQLException): ", e.getMessage ( ) );
         } catch (Exception e) {

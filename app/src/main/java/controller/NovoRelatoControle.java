@@ -14,13 +14,14 @@ public class NovoRelatoControle implements Serializable {
     private String gravidade;
     private String descricao;
     private String medicaemnto;
+    private String email;
 
     public NovoRelatoControle(){
 
     }
 
-    public NovoRelatoControle(int id, String dosagem, String dataInicio, String dataTermino, String gravidade,
-                              String descricao, String medicaemnto) {
+    public NovoRelatoControle(int id, String dosagem, String dataInicio, String dataTermino,
+                              String gravidade, String descricao, String medicaemnto, String email) {
         this.id = id;
         this.dosagem = dosagem;
         this.dataInicio = dataInicio;
@@ -28,6 +29,7 @@ public class NovoRelatoControle implements Serializable {
         this.gravidade = gravidade;
         this.descricao = descricao;
         this.medicaemnto = medicaemnto;
+        this.email = email;
     }
 
     public int getId() {
@@ -36,14 +38,6 @@ public class NovoRelatoControle implements Serializable {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getMedicaemnto() {
-        return medicaemnto;
-    }
-
-    public void setMedicaemnto(String medicaemnto) {
-        this.medicaemnto = medicaemnto;
     }
 
     public String getDosagem() {
@@ -86,6 +80,22 @@ public class NovoRelatoControle implements Serializable {
         this.descricao = descricao;
     }
 
+    public String getMedicaemnto() {
+        return medicaemnto;
+    }
+
+    public void setMedicaemnto(String medicaemnto) {
+        this.medicaemnto = medicaemnto;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -97,12 +107,14 @@ public class NovoRelatoControle implements Serializable {
                 getDataTermino ( ).equals ( that.getDataTermino ( ) ) &&
                 getGravidade ( ).equals ( that.getGravidade ( ) ) &&
                 getDescricao ( ).equals ( that.getDescricao ( ) ) &&
-                getMedicaemnto ( ).equals ( that.getMedicaemnto ( ) );
+                getMedicaemnto ( ).equals ( that.getMedicaemnto ( ) ) &&
+                getEmail ( ).equals ( that.getEmail ( ) );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash ( getId ( ), getDosagem ( ), getDataInicio ( ), getDataTermino ( ), getGravidade ( ), getDescricao ( ), getMedicaemnto ( ) );
+        return Objects.hash ( getId ( ), getDosagem ( ), getDataInicio ( ),
+                getDataTermino ( ), getGravidade ( ), getDescricao ( ), getMedicaemnto ( ), getEmail ( ) );
     }
 
     @Override
@@ -115,6 +127,7 @@ public class NovoRelatoControle implements Serializable {
                 ", gravidade='" + gravidade + '\'' +
                 ", descricao='" + descricao + '\'' +
                 ", medicaemnto='" + medicaemnto + '\'' +
+                ", email='" + email + '\'' +
                 '}';
     }
 

@@ -35,10 +35,10 @@ public class LoginDAO implements LoginInterface {
                 LoginControle c = new LoginControle ();
                 c.setId ( rs.getInt("idusuario") );
 
-                System.out.print( c.getId () );
+                //System.out.print( c.getId () );
 
             }
-            Log.e("LOGIN: ", "Login Sucesso!");
+           // Log.e("LOGIN: ", "Login Sucesso!");
         } catch (SQLException e) {
             Log.e("BANCO (SQLException): ", e.getMessage());
         } catch (Exception e) {

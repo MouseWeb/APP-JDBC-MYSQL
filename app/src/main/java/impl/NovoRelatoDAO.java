@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import controller.LoginControle;
 import controller.NovoRelatoControle;
@@ -46,6 +48,43 @@ public class NovoRelatoDAO implements NovoRelatoInterface {
 
     }
 
+    @Override
+    public List <NovoRelatoControle> getMailUser() {
+
+        Connection con = JDBCconnection.getConnection ( );
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+
+        List <NovoRelatoControle> list = null;
+        try {
+            list = new ArrayList <> ( );
+
+            stmt = con.prepareStatement ( " SELECT tbl_usuarios.usu_email "
+                    + "  FROM tbl_usuarios "
+                    + "  WHERE tbl_usuarios.idusuario = ? ");
+
+            stmt.setInt ( 1, c.getId () );
+
+            rs = stmt.executeQuery ( );
+
+            while (rs.next ( )) {
+                NovoRelatoControle obj = new NovoRelatoControle ( );
+                obj.setEmail ( rs.getString ( "usu_email" ) );
+
+                list.add ( obj );
+                //System.out.println ( obj );
+            }
+            // Log.e("PERFIL: ", "Lista email user Menu Sucesso!");
+        } catch (SQLException e) {
+            Log.e ( "BANCO (SQLException): ", e.getMessage ( ) );
+        } catch (Exception e) {
+            Log.e ( "BANCO (Exception); ", e.getMessage ( ) );
+        } finally {
+            JDBCconnection.closeConnection ( con, stmt, rs );
+        }
+        return list;
+    }
+
     public void insertRelato(NovoRelatoControle n) {
 
         Connection con = JDBCconnection.getConnection();
@@ -68,7 +107,7 @@ public class NovoRelatoDAO implements NovoRelatoInterface {
 
             stmt.executeUpdate();
 
-            Log.e("BANCO", "Salvo com sucesso!");
+           // Log.e("BANCO", "Salvo com sucesso!");
         } catch (SQLException e) {
             Log.e("BANCO", "Erro ao salvar!" + e);
         } finally {

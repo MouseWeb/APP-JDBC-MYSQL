@@ -66,7 +66,7 @@ public class PerfilDAO implements PerfilInterface {
 
             stmt.executeUpdate ( );
 
-            Log.e("PERFIL: ", "Update Perfil Sucesso!");
+           // Log.e("PERFIL: ", "Update Perfil Sucesso!");
         }catch (SQLException e) {
             Log.e ( "BANCO (SQLException): ", e.getMessage ( ) );
         } catch (Exception e) {
@@ -109,9 +109,9 @@ public class PerfilDAO implements PerfilInterface {
                 obj.setSenha ( rs.getString ( "usu_senha" ) );
 
                 list.add ( obj );
-                System.out.println ( obj );
+                //System.out.println ( obj );
             }
-            Log.e("PERFIL: ", "Lista Perfil Sucesso!");
+           // Log.e("PERFIL: ", "Lista Perfil Sucesso!");
         } catch (SQLException e) {
             Log.e ( "BANCO (SQLException): ", e.getMessage ( ) );
         } catch (Exception e) {

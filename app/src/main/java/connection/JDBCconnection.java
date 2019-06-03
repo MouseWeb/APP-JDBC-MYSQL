@@ -8,8 +8,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class JDBCconnection {
 
@@ -30,7 +28,7 @@ public class JDBCconnection {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             cn = DriverManager.getConnection(url, usuario, senha);
 
-            Log.e("BANCO: ", "Conexão Aberta");
+            //Log.e("BANCO: ", "Conexão Aberta");
         } catch (SQLException e) {
             Log.e("BANCO (SQLException): ", e.getMessage());
         } catch (IllegalAccessException e) {
@@ -45,10 +43,10 @@ public class JDBCconnection {
         try {
             if (con != null) {
                 con.close();
-                Log.e("BANCO: ", "Conexão Fechada (con)");
+                //Log.e("BANCO: ", "Conexão Fechada (con)");
             }
         } catch (SQLException e) {
-            Logger.getLogger(JDBCconnection.class.getName()).log(Level.SEVERE, null, e.getMessage());
+            Log.e ( "Conexão (con) : ", e.getMessage ( ) );
         }
     }
 
@@ -59,11 +57,11 @@ public class JDBCconnection {
 
             if (stmt != null) {
                 stmt.close();
-                Log.e("BANCO: ", "Conexão Fechada (con) + (stmt)");
+                //Log.e("BANCO: ", "Conexão Fechada (con) + (stmt)");
             }
 
         } catch (SQLException e) {
-            Logger.getLogger(JDBCconnection.class.getName()).log(Level.SEVERE, null, e.getMessage());
+            Log.e ( "Conexão (con, stmt) : ", e.getMessage ( ) );
         }
     }
 
@@ -74,11 +72,11 @@ public class JDBCconnection {
 
             if (rs != null) {
                 rs.close();
-                Log.e("BANCO: ", "Conexão Fechada (con) + (stmt) + (rs)");
+                //Log.e("BANCO: ", "Conexão Fechada (con) + (stmt) + (rs)");
             }
 
         } catch (SQLException e) {
-            Logger.getLogger(JDBCconnection.class.getName()).log(Level.SEVERE, null, e.getMessage());
+            Log.e ( "Conexão(con, stmt, rs):", e.getMessage ( ) );
         }
 
     }

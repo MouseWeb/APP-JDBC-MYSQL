@@ -76,9 +76,9 @@ public class MainDAO implements MainInterface {
                 obj.setEmail ( rs.getString ( "usu_email" ) );
 
                 list.add ( obj );
-                System.out.println ( obj );
+                //System.out.println ( obj );
             }
-            Log.e("PERFIL: ", "Lista Perfil Menu Sucesso!");
+           // Log.e("PERFIL: ", "Lista Perfil Menu Sucesso!");
         } catch (SQLException e) {
             Log.e ( "BANCO (SQLException): ", e.getMessage ( ) );
         } catch (Exception e) {
