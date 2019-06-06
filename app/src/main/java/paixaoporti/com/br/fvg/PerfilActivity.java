@@ -1,5 +1,7 @@
 package paixaoporti.com.br.fvg;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,7 +12,10 @@ import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -26,6 +31,7 @@ public class PerfilActivity extends AppCompatActivity {
     private EditText telefone;
     private EditText usuario;
     private EditText senhaPerfil;
+    private ProgressBar progress;
 
     PerfilDAO dao = new PerfilDAO ();
 
@@ -43,6 +49,8 @@ public class PerfilActivity extends AppCompatActivity {
         telefone = (EditText) findViewById(R.id.txttelefone);
         usuario = (EditText) findViewById(R.id.txtusuario);
         senhaPerfil = (EditText) findViewById(R.id.txtsenha);
+        progress = findViewById(R.id.progress);
+        progress.setVisibility(View.GONE);
 
         SharedPreferences sp = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
 
@@ -66,6 +74,74 @@ public class PerfilActivity extends AppCompatActivity {
 
             }
 
+        }
+
+    }
+
+    public void updatePerfil(View view){
+
+        if ( temConexao(PerfilActivity.this) == false ) {
+            mostraAlerta();
+            return;
+        } else if (validacao() == false){
+            return;
+        } else {
+            progress.setVisibility(View.VISIBLE);
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+
+                    PerfilControle p = new PerfilControle ( );
+
+                    SharedPreferences sp = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+
+                    String login = sp.getString("login", "");
+                    String senha = sp.getString("senha", "");
+
+                    dao.userFindById ( login, senha );
+
+                    p.setNome ( nome.getText ().toString () );
+                    p.setEmail ( email.getText ().toString () );
+                    p.setTelefone ( telefone.getText ().toString () );
+                    p.setLogin ( usuario.getText ().toString () );
+                    p.setSenha ( senhaPerfil.getText ().toString () );
+                    dao.updatePerfil ( p );
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            exibeTela();
+                        }
+                    });
+                }
+            }).start();
+
+        }
+
+    }
+
+    public boolean validacao() {
+
+        String userNameGet = nome.getText ().toString ();
+        String userEmailGet = email.getText ().toString ();
+        String userLoginGet = usuario.getText ().toString ();
+        String userSenhaGet = senhaPerfil.getText ().toString ();
+
+        if ( userNameGet == null ||  userNameGet.equals ( "" ) ){
+            nome.setError( "Campo Obrigatorio!" );
+            return false;
+        } else if( userEmailGet == null || userEmailGet.equals ( "" ) ){
+            email.setError ( "Campo Obrigatorio!" );
+            return false;
+        } else if( userLoginGet == null || userLoginGet.equals ( "" ) ){
+            usuario.setError ( "Campo Obrigatorio!" );
+            return false;
+        } else if( userSenhaGet == null || userSenhaGet.equals ( "" ) ){
+            senhaPerfil.setError ( "Campo Obrigatorio!" );
+            return false;
+        } else {
+            return true;
         }
 
     }
@@ -104,6 +180,16 @@ public class PerfilActivity extends AppCompatActivity {
         });
 
         alertDialog.show();
+    }
+
+    private void exibeTela() {
+        progress.setVisibility(View.GONE);
+        Toast.makeText ( PerfilActivity.this, "Salvo com sucesso!!!", Toast.LENGTH_SHORT ).show ( );
+    }
+
+    public void voltaHome(View view){
+        Intent f = new Intent(PerfilActivity.this,MainActivity.class);
+        startActivity(f);
     }
 
 }

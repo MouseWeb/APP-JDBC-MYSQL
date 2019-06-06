@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -72,21 +72,31 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/voltarNotificador"
+                android:id="@+id/voltarPerfil"
                 android:layout_width="72dp"
                 android:layout_height="65dp"
                 android:layout_marginRight="30dp"
                 android:gravity="center"
+                android:onClick="voltaHome"
                 android:src="@drawable/voltar" />
 
             <ImageView
-                android:id="@+id/salvarDadosNotificador"
+                android:id="@+id/salvarPerfil"
                 android:layout_width="72dp"
                 android:layout_height="65dp"
                 android:layout_marginLeft="30dp"
                 android:gravity="center"
+                android:onClick="updatePerfil"
                 android:src="@drawable/ok" />
 
         </LinearLayout>
     </LinearLayout>
-</ScrollView>
+
+    <ProgressBar
+        android:id="@+id/progress"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="222dp"
+        android:layout_height="199dp"
+        android:layout_gravity="center" />
+
+</FrameLayout>

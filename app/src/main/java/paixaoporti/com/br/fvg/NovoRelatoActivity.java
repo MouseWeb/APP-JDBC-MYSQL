@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,7 +46,10 @@ public class NovoRelatoActivity extends AppCompatActivity implements View.OnClic
     private ImageView cancelarEventoADV;
     private EditText medicamentoNovoRelato, dosagemNovoRelato, descricaoNovoRelato, gravidadeNovoRelato;
     private int codigo;
+    private ProgressBar progress;
     private static final String PREF_NAME = "LoginActivityPreferences";
+
+    NovoRelatoDAO dao = new NovoRelatoDAO ();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +69,9 @@ public class NovoRelatoActivity extends AppCompatActivity implements View.OnClic
         gravarNovoRelato        = (ImageView) findViewById ( R.id.imggravarNovoRelato );
         codeBarraPaciente       = (ImageView) findViewById ( R.id.imgcodeBarraPaciente );
         cancelarEventoADV       = (ImageView) findViewById ( R.id.imgcancelarEventoADV );
+        progress                = findViewById(R.id.progress);
+
+        progress.setVisibility(View.GONE);
 
         gravarNovoRelato.setOnClickListener( this );
         cancelarEventoADV.setOnClickListener ( this );
@@ -169,6 +176,25 @@ public class NovoRelatoActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
+    @Override
+    public void onClick(View v) {
+
+        if (v.getId() == R.id.imggravarNovoRelato ) {
+
+            validacao();
+
+        }else if(v.getId () == R.id.imgcancelarEventoADV ){
+
+            Intent f = new Intent(this,MainActivity.class);
+            startActivity(f);
+
+            finish ();
+
+        }else{
+            Toast.makeText ( NovoRelatoActivity.this, "Erro ao salvar Relato!", Toast.LENGTH_SHORT ).show ( );
+        }
+    }
+
     public void validacao() {
 
         String medicamentoCompleteGet   = medicamentoNovoRelato.getText ( ).toString ( );
@@ -197,7 +223,6 @@ public class NovoRelatoActivity extends AppCompatActivity implements View.OnClic
             descricaoNovoRelato.setError ( "Campo Obrigatorio" );
 
         } else {
-            Toast.makeText ( NovoRelatoActivity.this, "Relato enviado com sucesso!", Toast.LENGTH_SHORT ).show ( );
             salvarNovoRelato( );
             limparCampos();
         }
@@ -206,27 +231,41 @@ public class NovoRelatoActivity extends AppCompatActivity implements View.OnClic
 
     public void salvarNovoRelato() {
 
-        NovoRelatoControle n = new NovoRelatoControle ();
-        NovoRelatoDAO dao = new NovoRelatoDAO ();
+        /*progress.setVisibility(View.VISIBLE);
 
-        SharedPreferences sp = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {*/
 
-        String login = sp.getString("login", "");
-        String senha = sp.getString("senha", "");
+                NovoRelatoControle n = new NovoRelatoControle ();
 
-        dao.userFindById ( login, senha );
+                SharedPreferences sp = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
 
-        n.setMedicaemnto ( medicamentoNovoRelato.getText().toString () );
-        n.setDosagem ( dosagemNovoRelato.getText ().toString () );
-        n.setDataInicio ( inicioDataNovoRelato.getText ().toString () );
-        n.setDataTermino ( terminoDataNovoRelato.getText ().toString () );
-        n.setGravidade ( gravidadeNovoRelato.getText ().toString () );
-        n.setDescricao ( descricaoNovoRelato.getText ().toString () );
+                String login = sp.getString("login", "");
+                String senha = sp.getString("senha", "");
 
-        dao.insertRelato ( n );
+                dao.userFindById ( login, senha );
 
+                n.setMedicaemnto ( medicamentoNovoRelato.getText().toString () );
+                n.setDosagem ( dosagemNovoRelato.getText ().toString () );
+                n.setDataInicio ( inicioDataNovoRelato.getText ().toString () );
+                n.setDataTermino ( terminoDataNovoRelato.getText ().toString () );
+                n.setGravidade ( gravidadeNovoRelato.getText ().toString () );
+                n.setDescricao ( descricaoNovoRelato.getText ().toString () );
+
+                dao.insertRelato ( n );
+
+               /* runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        exibeTela();
+                    }
+                });
+            }
+        }).start();*/
+
+        Toast.makeText ( NovoRelatoActivity.this, "Relato enviado com sucesso!", Toast.LENGTH_SHORT ).show ( );
         enviarEmail();
-
     }
 
     private void enviarEmail(){
@@ -351,22 +390,8 @@ public class NovoRelatoActivity extends AppCompatActivity implements View.OnClic
         alertDialog.show();
     }
 
-    @Override
-    public void onClick(View v) {
-
-        if (v.getId() == R.id.imggravarNovoRelato ) {
-
-            validacao();
-
-        }else if(v.getId () == R.id.imgcancelarEventoADV ){
-
-            Intent f = new Intent(this,MainActivity.class);
-            startActivity(f);
-
-            finish ();
-
-        }else{
-            Toast.makeText ( NovoRelatoActivity.this, "Erro ao salvar Relato!", Toast.LENGTH_SHORT ).show ( );
-        }
-    }
+   /* private void exibeTela() {
+        progress.setVisibility(View.GONE);
+        //Toast.makeText ( PerfilActivity.this, "Salvo com sucesso!!!", Toast.LENGTH_SHORT ).show ( );
+    }*/
 }

@@ -51,18 +51,27 @@ public class PerfilDAO implements PerfilInterface {
     }
 
     @Override
-    public void update(PerfilControle obj) {
+    public void updatePerfil(PerfilControle obj) {
 
         Connection con = JDBCconnection.getConnection ( );
         PreparedStatement stmt = null;
         ResultSet rs = null;
 
         try {
-            stmt = con.prepareStatement  ( "UPDATE department " +
-                                                "SET Name = ? " +
-                                                "WHERE Id = ?" );
+            stmt = con.prepareStatement  ( "UPDATE tbl_usuarios "
+                                                + " SET usu_nome = ? , "
+                                                + " usu_login = ? , "
+                                                + " usu_senha = ? , "
+                                                + " usu_telefone = ? , "
+                                                + " usu_email = ? "
+                                                + " WHERE idusuario = ? " );
 
-            stmt.setInt ( 1, c.getId () );
+            stmt.setString ( 1, obj.getNome ());
+            stmt.setString ( 2, obj.getLogin ());
+            stmt.setString ( 3, obj.getSenha ());
+            stmt.setString ( 4, obj.getTelefone ());
+            stmt.setString ( 5, obj.getEmail ());
+            stmt.setInt ( 6, c.getId () );
 
             stmt.executeUpdate ( );
 

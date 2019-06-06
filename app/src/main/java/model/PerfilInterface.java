@@ -8,7 +8,7 @@ public interface PerfilInterface {
 
     void userFindById(String login, String senha);
 
-    void update(PerfilControle obj);
+    void updatePerfil(PerfilControle obj);
 
     List <PerfilControle> getListaPerfil();
 

@@ -49,6 +49,38 @@ public class NovoRelatoDAO implements NovoRelatoInterface {
     }
 
     @Override
+    public void insertRelato(NovoRelatoControle n) {
+
+        Connection con = JDBCconnection.getConnection();
+
+        PreparedStatement stmt = null;
+
+        try {
+            stmt = con.prepareStatement(" INSERT INTO tbl_relatos "
+                    + " ( rel_nome, rel_dosagem, rel_qd_med_ini, rel_qd_med_inter, "
+                    + " rel_gravidade, rel_descricao, idusuario) "
+                    + " VALUES (?,?,?,?,?,?,?) ");
+
+            stmt.setString ( 1, n.getMedicaemnto ());
+            stmt.setString ( 2, n.getDosagem ());
+            stmt.setString ( 3, n.getDataInicio ());
+            stmt.setString ( 4, n.getDataTermino ());
+            stmt.setString ( 5, n.getGravidade ());
+            stmt.setString ( 6, n.getDescricao ());
+            stmt.setInt ( 7, c.getId () );
+
+            stmt.executeUpdate();
+
+            // Log.e("BANCO", "Salvo com sucesso!");
+        } catch (SQLException e) {
+            Log.e("BANCO", "Erro ao salvar!" + e);
+        } finally {
+            JDBCconnection.closeConnection(con, stmt);
+        }
+
+    }
+
+    @Override
     public List <NovoRelatoControle> getMailUser() {
 
         Connection con = JDBCconnection.getConnection ( );
@@ -83,37 +115,6 @@ public class NovoRelatoDAO implements NovoRelatoInterface {
             JDBCconnection.closeConnection ( con, stmt, rs );
         }
         return list;
-    }
-
-    public void insertRelato(NovoRelatoControle n) {
-
-        Connection con = JDBCconnection.getConnection();
-
-        PreparedStatement stmt = null;
-
-        try {
-            stmt = con.prepareStatement(" INSERT INTO tbl_relatos "
-                                         + " ( rel_nome, rel_dosagem, rel_qd_med_ini, rel_qd_med_inter, "
-                                         + " rel_gravidade, rel_descricao, idusuario) "
-                                         + " VALUES (?,?,?,?,?,?,?) ");
-
-            stmt.setString ( 1, n.getMedicaemnto ());
-            stmt.setString ( 2, n.getDosagem ());
-            stmt.setString ( 3, n.getDataInicio ());
-            stmt.setString ( 4, n.getDataTermino ());
-            stmt.setString ( 5, n.getGravidade ());
-            stmt.setString ( 6, n.getDescricao ());
-            stmt.setInt ( 7, c.getId () );
-
-            stmt.executeUpdate();
-
-           // Log.e("BANCO", "Salvo com sucesso!");
-        } catch (SQLException e) {
-            Log.e("BANCO", "Erro ao salvar!" + e);
-        } finally {
-            JDBCconnection.closeConnection(con, stmt);
-        }
-
     }
 
 }
