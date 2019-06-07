@@ -43,43 +43,37 @@ public class ListarRelatosActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);      //Ativar o botão
         getSupportActionBar().setTitle("Lista de Relatos");    //Titulo para ser exibido na sua Action Bar em frente à seta
 
-        // lista
-        listaRelatos = (ListView) findViewById(R.id.listadeEventosCadastrados);
-        progress = findViewById(R.id.progress);
-
-        listaRelatos.setVisibility(View.GONE);
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                SystemClock.sleep(2000);
-
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        exibeConteudo();
-                    }
-                });
-            }
-        }).start();
-
-        SharedPreferences sp = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-
-        final String login = sp.getString("login", "");
-        String senha = sp.getString("senha", "");
-
         if ( temConexao(ListarRelatosActivity.this) == false ) {
             mostraAlerta();
             return;
         } else {
-            dao.userFindById ( login, senha );
 
-            List<ListarRelatoControle> list = dao.getListaRelato ();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
 
-            ArrayAdapter<ListarRelatoControle> adapter = new ArrayAdapter<ListarRelatoControle>(
-                    this, android.R.layout.simple_list_item_1, list);
+                    listaRelatos = (ListView) findViewById(R.id.listadeEventosCadastrados);
+                    progress = findViewById(R.id.progress);
 
-            listaRelatos.setAdapter(adapter);
+                    listaRelatos.setVisibility(View.GONE);
+
+                    SharedPreferences sp = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+
+                    final String login = sp.getString("login", "");
+                    String senha = sp.getString("senha", "");
+
+                    dao.userFindById ( login, senha );
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            listRelatosTreand();
+                            exibeConteudo();
+                        }
+                    });
+                }
+
+            }).start();
 
         }
 
@@ -97,10 +91,20 @@ public class ListarRelatosActivity extends AppCompatActivity {
 
     }
 
+    private void listRelatosTreand(){
+
+        List<ListarRelatoControle> list = dao.getListaRelato ();
+
+        ArrayAdapter<ListarRelatoControle> adapter = new ArrayAdapter<ListarRelatoControle>(
+                this, android.R.layout.simple_list_item_1, list);
+
+        listaRelatos.setAdapter(adapter);
+
+    }
+
     private void exibeConteudo() {
         //listaRelatos.setVisibility(View.VISIBLE);
         //progress.setVisibility(View.GONE);
-
         listaRelatos.setVisibility(View.VISIBLE);
         listaRelatos.setAlpha(0.0f);
 

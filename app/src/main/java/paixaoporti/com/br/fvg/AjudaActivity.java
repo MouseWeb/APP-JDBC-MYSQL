@@ -10,10 +10,8 @@ import android.widget.TextView;
 
 public class AjudaActivity extends AppCompatActivity {
 
-    private ImageView telefone;
-    private TextView telefoneCadastro;
-    private TextView emailCadastro;
-    private ImageView email;
+    private ImageView telefone, email;
+    private TextView telefoneCadastro, emailCadastro;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

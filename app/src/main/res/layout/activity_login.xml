@@ -58,7 +58,7 @@
             android:textColor="#337ab7" />
 
         <CheckedTextView
-            android:id="@+id/esqueceuSenha"
+            android:id="@+id/esqueceuSenhaUser"
             android:layout_width="150dp"
             android:layout_height="34dp"
             android:layout_gravity="right"

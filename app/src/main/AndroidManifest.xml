@@ -15,7 +15,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".RecupararSenhaActivity"></activity>
         <activity
             android:name=".SplashScreenActivity"
             android:label="@string/app_name"
@@ -63,6 +62,10 @@
         <activity
             android:name=".PerfilActivity"
             android:parentActivityName=".MainActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".RecuperaSenhaActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".AjudaActivity"

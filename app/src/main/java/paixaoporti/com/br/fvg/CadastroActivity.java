@@ -11,16 +11,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckedTextView;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 import controller.CadastroControle;
 import impl.CadastroDAO;
 
-public class CadastroActivity extends AppCompatActivity implements View.OnClickListener {
+public class CadastroActivity extends AppCompatActivity {
 
-    private Button btSalvarCadastro;
     private EditText nomeCadastro, userCadastro, senhaCadastro, emailCadastro;
-    int codigo;
+    private ProgressBar progress;
+
+    CadastroDAO dao = new CadastroDAO ();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,65 +35,70 @@ public class CadastroActivity extends AppCompatActivity implements View.OnClickL
         userCadastro        = (EditText) findViewById(R.id.novo_user_nome);
         senhaCadastro       = (EditText) findViewById(R.id.novo_user_senha);
         emailCadastro       = (EditText) findViewById(R.id.novo_user_email);
-
-        btSalvarCadastro    = (Button) findViewById(R.id.cadastra_user);
-        btSalvarCadastro.setOnClickListener(this);
+        progress            = findViewById(R.id.progress);
+        progress.setVisibility(View.GONE);
 
     }
 
-    public void salvarCadastro() {
+    public void salvarCadastro(View view) {
 
-        CadastroControle c = new CadastroControle();
-        CadastroDAO dao = new CadastroDAO();
+        if ( temConexao(CadastroActivity.this) == false ) {
+            mostraAlerta();
+            return;
+        } else if (validacao() == false) {
+            return;
+        } else if (dao.checkLogin(userCadastro.getText().toString (), senhaCadastro.getText().toString ())){
+            Toast.makeText ( CadastroActivity.this, "Usuário já existe!!!", Toast.LENGTH_SHORT ).show ( );
+            limparCampos ();
+        } else {
+            progress.setVisibility(View.VISIBLE);
 
-        c.setNome( nomeCadastro.getText().toString() );
-        c.setUser( userCadastro.getText().toString() );
-        c.setSenha( senhaCadastro.getText().toString() );
-        c.setEmail( emailCadastro.getText ().toString () );
-        dao.create( c );
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
 
-        limparCampos();
+                    CadastroControle c = new CadastroControle();
+
+                    c.setNome( nomeCadastro.getText().toString() );
+                    c.setUser( userCadastro.getText().toString() );
+                    c.setSenha( senhaCadastro.getText().toString() );
+                    c.setEmail( emailCadastro.getText ().toString () );
+                    dao.create( c );
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            exibeTela();
+                        }
+                    });
+                }
+            }).start();
+
+        }
+
     }
 
-    public void validacao(){
-
-        CadastroDAO dao = new CadastroDAO ();
+    public boolean  validacao(){
 
         String nomeCadastroGet  = nomeCadastro.getText().toString();
         String userCadastroGet  = userCadastro.getText().toString();
         String senhaCadastroGet = senhaCadastro.getText().toString();
         String emailCadastroGet = emailCadastro.getText ().toString ();
 
-        if ( temConexao(CadastroActivity.this) == false ) {
-
-            mostraAlerta();
-
-        } else if ( nomeCadastroGet == null ||  nomeCadastroGet.equals("") ){
-            nomeCadastro.setError( "Campo Nome Obrigatorio!" );
-
+        if ( nomeCadastroGet == null ||  nomeCadastroGet.equals("") ){
+            nomeCadastro.setError ( "Campo Nome Obrigatorio!" );
+            return false;
         } else if( emailCadastroGet == null || emailCadastroGet.equals ("")){
-            emailCadastro.setError( "Campo E-Mail Obrigatorio!" );
-
+            emailCadastro.setError ( "Campo E-Mail Obrigatorio!" );
+            return false;
         } else if( userCadastroGet == null || userCadastroGet.equals("") ){
             userCadastro.setError ( "Campo Login Obrigatorio!" );
-
+            return false;
         } else if( senhaCadastroGet == null || senhaCadastroGet.equals("") ) {
             senhaCadastro.setError ( "Campo Senha Obrigatorio!" );
-
-        }else if(dao.checkLogin(userCadastro.getText().toString (), senhaCadastro.getText().toString ())){
-            Toast.makeText ( CadastroActivity.this, "Usuário já existe!!!", Toast.LENGTH_SHORT ).show ( );
-            limparCampos ();
-
+            return false;
         } else {
-
-            Intent f = new Intent(CadastroActivity.this,LoginActivity.class);
-            startActivity(f);
-            salvarCadastro ();
-            limparCampos ();
-
-            Toast.makeText(CadastroActivity.this, "Cadastro Salvo com sucesso!!!", Toast.LENGTH_SHORT).show();
-
-            finish ();
+            return true;
 
         }
     }
@@ -98,8 +107,8 @@ public class CadastroActivity extends AppCompatActivity implements View.OnClickL
         nomeCadastro.setText("");
         userCadastro.setText("");
         senhaCadastro.setText("");
-        emailCadastro.setText ("");
-        this.codigo = 0;
+        emailCadastro.setText("");
+
     }
 
     // Se precisar desse método pra mais de uma classe, mude ele pra ser estático.
@@ -143,12 +152,19 @@ public class CadastroActivity extends AppCompatActivity implements View.OnClickL
         alertDialog.show();
     }
 
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.cadastra_user) {
-            validacao();
+    private void exibeTela() {
+        progress.setVisibility(View.GONE);
+        limparCampos();
+        Toast.makeText(CadastroActivity.this, "Cadastro Salvo com sucesso!!!", Toast.LENGTH_SHORT).show();
+        Intent f = new Intent(CadastroActivity.this, LoginActivity.class);
+        startActivity(f);
 
-        }
-
+        finish ();
     }
+
+    public void irParaLogin(View view){
+        Intent f = new Intent(CadastroActivity.this, LoginActivity.class);
+        startActivity(f);
+    }
+
 }

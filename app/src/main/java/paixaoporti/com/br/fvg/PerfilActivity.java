@@ -1,7 +1,5 @@
 package paixaoporti.com.br.fvg;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -26,11 +24,7 @@ public class PerfilActivity extends AppCompatActivity {
 
     private static final String PREF_NAME = "LoginActivityPreferences";
 
-    private EditText nome;
-    private EditText email;
-    private EditText telefone;
-    private EditText usuario;
-    private EditText senhaPerfil;
+    private EditText nome, email, telefone, usuario, senhaPerfil;
     private ProgressBar progress;
 
     PerfilDAO dao = new PerfilDAO ();
@@ -83,7 +77,7 @@ public class PerfilActivity extends AppCompatActivity {
         if ( temConexao(PerfilActivity.this) == false ) {
             mostraAlerta();
             return;
-        } else if (validacao() == false){
+        } else if ( validacao() == false ){
             return;
         } else {
             progress.setVisibility(View.VISIBLE);
@@ -129,7 +123,7 @@ public class PerfilActivity extends AppCompatActivity {
         String userSenhaGet = senhaPerfil.getText ().toString ();
 
         if ( userNameGet == null ||  userNameGet.equals ( "" ) ){
-            nome.setError( "Campo Obrigatorio!" );
+            nome.setError ( "Campo Obrigatorio!" );
             return false;
         } else if( userEmailGet == null || userEmailGet.equals ( "" ) ){
             email.setError ( "Campo Obrigatorio!" );

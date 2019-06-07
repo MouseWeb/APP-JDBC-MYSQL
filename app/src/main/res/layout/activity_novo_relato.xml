@@ -119,6 +119,7 @@
                 android:layout_height="65dp"
                 android:layout_marginRight="30dp"
                 android:gravity="center"
+                android:onClick="voltaHome"
                 android:src="@drawable/cancelar" />
 
             <ImageView
@@ -128,6 +129,7 @@
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="1dp"
                 android:gravity="center"
+                android:onClick="salvarNovoRelato"
                 android:src="@drawable/envio" />
 
         </LinearLayout>

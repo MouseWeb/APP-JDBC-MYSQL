@@ -22,9 +22,8 @@ import model.LoginInterface;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
 
     private static final String PREF_NAME = "LoginActivityPreferences";
-    private CheckedTextView cadastro;
-    private EditText loginVerifique;
-    private EditText senhaVerifique;
+    private CheckedTextView cadastro, esqueceuSenha;
+    private EditText loginVerifique, senhaVerifique;
 
     LoginInterface loginInterface = new LoginDAO();
 
@@ -38,6 +37,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         cadastro = (CheckedTextView) findViewById(R.id.cadastroUser);
         cadastro.setOnClickListener (this);
+
+        esqueceuSenha = (CheckedTextView) findViewById(R.id.esqueceuSenhaUser);
+        esqueceuSenha.setOnClickListener (this);
 
         SharedPreferences sp = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
 
@@ -118,7 +120,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Intent f = new Intent(this,CadastroActivity.class);
             startActivity(f);
 
-        }
+         } else if(view.getId () == R.id.esqueceuSenhaUser ){
+             Intent f = new Intent(this,RecuperaSenhaActivity.class);
+             startActivity(f);
+         }
 
     }
 

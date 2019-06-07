@@ -32,11 +32,9 @@ import impl.MainDAO;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    MainDAO dao = new MainDAO ();
+    private ImageView novoRelato, listarRelato, hospitaisRelato;
 
-    private ImageView novoRelato;
-    private ImageView listarRelato;
-    private ImageView hospitaisRelato;
+    MainDAO dao = new MainDAO ();
 
     private static final String PREF_NAME = "MainActivityPreferences";
     private static final String PREF_NENU = "LoginActivityPreferences";
@@ -215,7 +213,7 @@ public class MainActivity extends AppCompatActivity
         // tipo de conteúdo da intent
         intent.setType("text/plain");
         // string a ser enviada para outra intent
-        intent.putExtra(Intent.EXTRA_TEXT, "Link para baixa Aplicativo (FARMACOVIGILÂNCIA): https://mouseweb.com.br/" );
+        intent.putExtra(Intent.EXTRA_TEXT, "Link para baixa o aplicativo (FARMACOVIGILÂNCIA): https://mouseweb.com.br/sis/fvg/fvg.apk" );
         // inicia a intent
         startActivity(intent);
     }

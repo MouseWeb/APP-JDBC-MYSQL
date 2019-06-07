@@ -33,19 +33,14 @@ import controller.NovoRelatoControle;
 import impl.NovoRelatoDAO;
 import util.Mail;
 
-public class NovoRelatoActivity extends AppCompatActivity implements View.OnClickListener {
+public class NovoRelatoActivity extends AppCompatActivity {
 
-    //VARIAVEIS DO COMPONETE DATE CALENDAR
     private static final String TAG = "activityNovoRelato";
-    private TextView inicioDataNovoRelato;
+    private TextView inicioDataNovoRelato, terminoDataNovoRelato;
     private DatePickerDialog.OnDateSetListener mostrarInicioDataRelatoSetListenerNovoRelato;
-    private TextView terminoDataNovoRelato;
     private DatePickerDialog.OnDateSetListener mostrarTerminoDataRelatoSetListenerNovoRelato;
-    private ImageView gravarNovoRelato;
     private ImageView codeBarraPaciente;
-    private ImageView cancelarEventoADV;
     private EditText medicamentoNovoRelato, dosagemNovoRelato, descricaoNovoRelato, gravidadeNovoRelato;
-    private int codigo;
     private ProgressBar progress;
     private static final String PREF_NAME = "LoginActivityPreferences";
 
@@ -66,15 +61,10 @@ public class NovoRelatoActivity extends AppCompatActivity implements View.OnClic
         dosagemNovoRelato       = (EditText) findViewById ( R.id.editdosagemMedicamentoNovoRelato );
         descricaoNovoRelato     = (EditText) findViewById ( R.id.editdescricaoNovoRelato );
         gravidadeNovoRelato     = (EditText) findViewById ( R.id.editgravidadeNovoRelato );
-        gravarNovoRelato        = (ImageView) findViewById ( R.id.imggravarNovoRelato );
         codeBarraPaciente       = (ImageView) findViewById ( R.id.imgcodeBarraPaciente );
-        cancelarEventoADV       = (ImageView) findViewById ( R.id.imgcancelarEventoADV );
         progress                = findViewById(R.id.progress);
 
         progress.setVisibility(View.GONE);
-
-        gravarNovoRelato.setOnClickListener( this );
-        cancelarEventoADV.setOnClickListener ( this );
 
         inicioDataNovoRelato.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -176,26 +166,55 @@ public class NovoRelatoActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
-    @Override
-    public void onClick(View v) {
+    public void salvarNovoRelato(View view) {
 
-        if (v.getId() == R.id.imggravarNovoRelato ) {
+        if ( temConexao(NovoRelatoActivity.this) == false ) {
+            mostraAlerta();
+            return;
+        } else if (validacao() == false){
+            return;
+        } else {
+            progress.setVisibility ( View.VISIBLE );
 
-            validacao();
+            new Thread ( new Runnable ( ) {
+                @Override
+                public void run() {
 
-        }else if(v.getId () == R.id.imgcancelarEventoADV ){
+                    NovoRelatoControle n = new NovoRelatoControle ( );
 
-            Intent f = new Intent(this,MainActivity.class);
-            startActivity(f);
+                    SharedPreferences sp = getSharedPreferences ( PREF_NAME, MODE_PRIVATE );
 
-            finish ();
+                    String login = sp.getString ( "login", "" );
+                    String senha = sp.getString ( "senha", "" );
 
-        }else{
-            Toast.makeText ( NovoRelatoActivity.this, "Erro ao salvar Relato!", Toast.LENGTH_SHORT ).show ( );
+                    dao.userFindById ( login, senha );
+
+                    n.setMedicaemnto ( medicamentoNovoRelato.getText ( ).toString ( ) );
+                    n.setDosagem ( dosagemNovoRelato.getText ( ).toString ( ) );
+                    n.setDataInicio ( inicioDataNovoRelato.getText ( ).toString ( ) );
+                    n.setDataTermino ( terminoDataNovoRelato.getText ( ).toString ( ) );
+                    n.setGravidade ( gravidadeNovoRelato.getText ( ).toString ( ) );
+                    n.setDescricao ( descricaoNovoRelato.getText ( ).toString ( ) );
+                    dao.insertRelato ( n );
+
+                    limparCampos();
+
+                    runOnUiThread ( new Runnable ( ) {
+                        @Override
+                        public void run() {
+                            exibeTela ( );
+                        }
+                    } );
+                }
+            } ).start ( );
+
         }
+
+        Toast.makeText ( NovoRelatoActivity.this, "Relato enviado com sucesso!", Toast.LENGTH_SHORT ).show ( );
+        enviarEmail();
     }
 
-    public void validacao() {
+    public boolean  validacao() {
 
         String medicamentoCompleteGet   = medicamentoNovoRelato.getText ( ).toString ( );
         String dosagemMedicamentoGet    = dosagemNovoRelato.getText ( ).toString ( );
@@ -203,69 +222,25 @@ public class NovoRelatoActivity extends AppCompatActivity implements View.OnClic
         String gravidadeMedicamentoGet  = gravidadeNovoRelato.getText ( ).toString ( );
         String descricaoMedicamentoGet  = descricaoNovoRelato.getText ( ).toString ( );
 
-        if ( temConexao(NovoRelatoActivity.this) == false ) {
-
-            mostraAlerta();
-
-        } else if ( medicamentoCompleteGet == null ||  medicamentoCompleteGet.equals ( "" ) ){
-            medicamentoNovoRelato.setError( "Campo Obrigatorio" );
-
+        if ( medicamentoCompleteGet == null ||  medicamentoCompleteGet.equals ( "" ) ){
+            medicamentoNovoRelato.setError ( "Campo Obrigatorio" );
+            return false;
         } else if( dosagemMedicamentoGet == null || dosagemMedicamentoGet.equals ( "" ) ){
             dosagemNovoRelato.setError ( "Campo Obrigatorio" );
-
+            return false;
         } else if ( inicioDataGet == null || inicioDataGet.equals ( "" ) ){
             inicioDataNovoRelato.setError ( "Campo Obrigatorio" );
-
+            return false;
         } else if( gravidadeMedicamentoGet == null || gravidadeMedicamentoGet.equals ( "" ) ){
             gravidadeNovoRelato.setError ( "Campo Obrigatorio" );
-
+            return false;
         } else if( descricaoMedicamentoGet == null || descricaoMedicamentoGet.equals ( "" ) ){
             descricaoNovoRelato.setError ( "Campo Obrigatorio" );
-
+            return false;
         } else {
-            salvarNovoRelato( );
-            limparCampos();
+            return true;
         }
 
-    }
-
-    public void salvarNovoRelato() {
-
-        /*progress.setVisibility(View.VISIBLE);
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {*/
-
-                NovoRelatoControle n = new NovoRelatoControle ();
-
-                SharedPreferences sp = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-
-                String login = sp.getString("login", "");
-                String senha = sp.getString("senha", "");
-
-                dao.userFindById ( login, senha );
-
-                n.setMedicaemnto ( medicamentoNovoRelato.getText().toString () );
-                n.setDosagem ( dosagemNovoRelato.getText ().toString () );
-                n.setDataInicio ( inicioDataNovoRelato.getText ().toString () );
-                n.setDataTermino ( terminoDataNovoRelato.getText ().toString () );
-                n.setGravidade ( gravidadeNovoRelato.getText ().toString () );
-                n.setDescricao ( descricaoNovoRelato.getText ().toString () );
-
-                dao.insertRelato ( n );
-
-               /* runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        exibeTela();
-                    }
-                });
-            }
-        }).start();*/
-
-        Toast.makeText ( NovoRelatoActivity.this, "Relato enviado com sucesso!", Toast.LENGTH_SHORT ).show ( );
-        enviarEmail();
     }
 
     private void enviarEmail(){
@@ -342,7 +317,6 @@ public class NovoRelatoActivity extends AppCompatActivity implements View.OnClic
         descricaoNovoRelato.setText("");
         inicioDataNovoRelato.setText("");
         terminoDataNovoRelato.setText("");
-        this.codigo = 0;
     }
 
     public void limparDateIni() {
@@ -390,8 +364,13 @@ public class NovoRelatoActivity extends AppCompatActivity implements View.OnClic
         alertDialog.show();
     }
 
-   /* private void exibeTela() {
+    private void exibeTela() {
         progress.setVisibility(View.GONE);
-        //Toast.makeText ( PerfilActivity.this, "Salvo com sucesso!!!", Toast.LENGTH_SHORT ).show ( );
-    }*/
+    }
+
+    public void voltaHome(View view){
+        Intent f = new Intent(NovoRelatoActivity.this,MainActivity.class);
+        startActivity(f);
+    }
+
 }

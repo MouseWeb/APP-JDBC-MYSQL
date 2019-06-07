@@ -1,9 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RecupararSenhaActivity">
+    android:paddingBottom="16dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp"
+    android:orientation="vertical"
+    tools:context=".RecuperaSenhaActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="318dp"
+            android:layout_height="191dp"
+            app:srcCompat="@drawable/ini" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="348dp"
+            android:layout_height="66dp"
+            android:ellipsize="end"
+            android:text="Para redefinir sua senha, por favor, primeiro identificar a sua conta."
+            android:textColor="#337ab7"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/fundo_caixa_texto"
+            android:padding="16dp"
+            android:layout_marginTop="20dp"
+            android:textColorHint="@android:color/white"
+            android:hint="E-mail"
+            android:id="@+id/idEmail"
+            android:layout_gravity="center_horizontal"
+            android:singleLine="true" />
+
+        <CheckedTextView
+            android:id="@+id/idIrParaLogin"
+            android:layout_width="109dp"
+            android:layout_height="34dp"
+            android:layout_gravity="right"
+            android:layout_marginLeft="22dp"
+            android:layout_marginTop="10dp"
+            android:onClick="irParaLogin"
+            android:text="Ir para o login"
+            android:textColor="#337ab7" />
+
+        <Button
+            android:id="@+id/idRecSenha"
+            android:layout_width="276dp"
+            android:layout_height="49dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/fundo_botao"
+            android:onClick="recSenhaUser"
+            android:text="REDEFINIR A SENHA"
+            android:textAllCaps="true"
+            android:textColor="#FFFFFF"
+            android:textColorHint="@android:color/white"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+</FrameLayout>
