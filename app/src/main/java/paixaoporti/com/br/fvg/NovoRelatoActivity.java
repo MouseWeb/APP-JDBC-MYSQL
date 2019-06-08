@@ -197,11 +197,10 @@ public class NovoRelatoActivity extends AppCompatActivity {
                     n.setDescricao ( descricaoNovoRelato.getText ( ).toString ( ) );
                     dao.insertRelato ( n );
 
-                    limparCampos();
-
                     runOnUiThread ( new Runnable ( ) {
                         @Override
                         public void run() {
+                            limparCampos();
                             exibeTela ( );
                         }
                     } );
@@ -371,7 +370,7 @@ public class NovoRelatoActivity extends AppCompatActivity {
     public void voltaHome(View view){
         Intent f = new Intent(NovoRelatoActivity.this,MainActivity.class);
         startActivity(f);
-        finish ();
+
     }
 
 }
