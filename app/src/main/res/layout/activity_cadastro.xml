@@ -32,6 +32,7 @@
             android:textColorHint="@android:color/white"
             android:hint="Digite seu nome"
             android:id="@+id/nameCadastro"
+            android:singleLine="true"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="30dp" />
 
@@ -42,6 +43,7 @@
             android:padding="16dp"
             android:textColorHint="@android:color/white"
             android:hint="E-Mail"
+            android:singleLine="true"
             android:id="@+id/novo_user_email"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp" />
@@ -51,6 +53,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/fundo_caixa_texto"
             android:padding="16dp"
+            android:singleLine="true"
             android:textColorHint="@android:color/white"
             android:hint="Login"
             android:id="@+id/novo_user_nome"
@@ -62,6 +65,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/fundo_caixa_texto"
             android:padding="16dp"
+            android:singleLine="true"
             android:textColorHint="@android:color/white"
             android:hint="Senha"
             android:id="@+id/novo_user_senha"

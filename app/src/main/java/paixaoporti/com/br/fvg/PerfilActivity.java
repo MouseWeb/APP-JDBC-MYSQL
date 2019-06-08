@@ -18,7 +18,9 @@ import android.widget.Toast;
 import java.util.List;
 
 import controller.PerfilControle;
+import enumType.MaskType;
 import impl.PerfilDAO;
+import util.Mask;
 
 public class PerfilActivity extends AppCompatActivity {
 
@@ -41,6 +43,7 @@ public class PerfilActivity extends AppCompatActivity {
         nome  = (EditText) findViewById(R.id.txtnome);
         email = (EditText) findViewById(R.id.txtemail);
         telefone = (EditText) findViewById(R.id.txttelefone);
+        telefone.addTextChangedListener( Mask.insert(telefone, MaskType.TELEFONE));
         usuario = (EditText) findViewById(R.id.txtusuario);
         senhaPerfil = (EditText) findViewById(R.id.txtsenha);
         progress = findViewById(R.id.progress);
@@ -105,7 +108,7 @@ public class PerfilActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            exibeTela();
+                            exibeTelaGravado();
                         }
                     });
                 }
@@ -176,14 +179,19 @@ public class PerfilActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-    private void exibeTela() {
+    private void exibeTelaGravado() {
         progress.setVisibility(View.GONE);
+
         Toast.makeText ( PerfilActivity.this, "Salvo com sucesso!!!", Toast.LENGTH_SHORT ).show ( );
+        Intent f = new Intent(PerfilActivity.this,MainActivity.class);
+        startActivity(f);
+        finish ();
     }
 
     public void voltaHome(View view){
         Intent f = new Intent(PerfilActivity.this,MainActivity.class);
         startActivity(f);
+        finish ();
     }
 
 }

@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.SystemClock;
 import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -95,10 +94,16 @@ public class ListarRelatosActivity extends AppCompatActivity {
 
         List<ListarRelatoControle> list = dao.getListaRelato ();
 
-        ArrayAdapter<ListarRelatoControle> adapter = new ArrayAdapter<ListarRelatoControle>(
-                this, android.R.layout.simple_list_item_1, list);
+        if ( list.size () > 0 ){
+            ArrayAdapter<ListarRelatoControle> adapter = new ArrayAdapter<ListarRelatoControle>(
+                    this, android.R.layout.simple_list_item_1, list);
 
-        listaRelatos.setAdapter(adapter);
+            listaRelatos.setAdapter(adapter);
+
+        } else {
+            listVazio();
+
+        }
 
     }
 
@@ -154,6 +159,29 @@ public class ListarRelatosActivity extends AppCompatActivity {
         alertDialog.setNegativeButton("Não", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
+            }
+        });
+
+        alertDialog.show();
+    }
+
+    public void listVazio() {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Não foi enviado relato!");
+        alertDialog.setMessage("Deseja relatar um evento adverso?");
+        alertDialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(ListarRelatosActivity.this, NovoRelatoActivity.class);
+                startActivity(intent);
+                finish ();
+            }
+        });
+
+        alertDialog.setNegativeButton("Não", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(ListarRelatosActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish ();
             }
         });
 

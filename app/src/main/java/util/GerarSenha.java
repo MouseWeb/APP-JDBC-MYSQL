@@ -2,7 +2,7 @@ package util;
 
 import java.util.Random;
 
-public class GerarSenha {
+public abstract class GerarSenha {
 
     // Random é uma classe do Java que gera números aleatórios
     private static Random rand = new Random ();
@@ -31,5 +31,7 @@ public class GerarSenha {
         else { // gera letra minuscula
             return (char) (rand.nextInt(26) + 97);
         }
+
     }
+
 }

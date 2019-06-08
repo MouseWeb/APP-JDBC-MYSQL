@@ -29,6 +29,8 @@ import java.util.List;
 import controller.MainControle;
 import impl.MainDAO;
 
+import static java.lang.System.exit;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -213,7 +215,7 @@ public class MainActivity extends AppCompatActivity
         // tipo de conteúdo da intent
         intent.setType("text/plain");
         // string a ser enviada para outra intent
-        intent.putExtra(Intent.EXTRA_TEXT, "Link para baixa o aplicativo (FARMACOVIGILÂNCIA): https://mouseweb.com.br/sis/fvg/fvg.apk" );
+        intent.putExtra(Intent.EXTRA_TEXT, "Link para baixa o aplicativo (FARMACOVIGILÂNCIA): <https://mouseweb.com.br/sis/fvg/fvg.apk>" );
         // inicia a intent
         startActivity(intent);
     }
@@ -234,8 +236,6 @@ public class MainActivity extends AppCompatActivity
             startActivity(intent);
 
         } else if (id == R.id.listarRelatoMenu) {
-            /*ProgressDialog.show ( MainActivity.this, "Aguarde",
-                    "Por Favor Aguarde..." );*/
             Intent f = new Intent(MainActivity.this,ListarRelatosActivity.class);
             startActivity(f);
 

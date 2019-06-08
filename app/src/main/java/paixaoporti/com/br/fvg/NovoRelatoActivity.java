@@ -371,6 +371,7 @@ public class NovoRelatoActivity extends AppCompatActivity {
     public void voltaHome(View view){
         Intent f = new Intent(NovoRelatoActivity.this,MainActivity.class);
         startActivity(f);
+        finish ();
     }
 
 }

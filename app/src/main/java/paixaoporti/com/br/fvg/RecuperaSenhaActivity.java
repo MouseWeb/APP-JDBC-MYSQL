@@ -29,6 +29,7 @@ public class RecuperaSenhaActivity extends AppCompatActivity {
     public void irParaLogin(View view){
         Intent f = new Intent( RecuperaSenhaActivity.this, LoginActivity.class);
         startActivity(f);
+        finish ();
     }
 
 }

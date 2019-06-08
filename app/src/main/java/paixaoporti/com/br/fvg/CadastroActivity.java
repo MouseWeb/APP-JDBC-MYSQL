@@ -158,13 +158,13 @@ public class CadastroActivity extends AppCompatActivity {
         Toast.makeText(CadastroActivity.this, "Cadastro Salvo com sucesso!!!", Toast.LENGTH_SHORT).show();
         Intent f = new Intent(CadastroActivity.this, LoginActivity.class);
         startActivity(f);
-
         finish ();
     }
 
     public void irParaLogin(View view){
         Intent f = new Intent(CadastroActivity.this, LoginActivity.class);
         startActivity(f);
+        finish ();
     }
 
 }
